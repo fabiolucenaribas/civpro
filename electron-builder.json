@@ -1,0 +1,44 @@
+{
+  "productName": "CIVPRO",
+  "asar": false,
+  "directories": {
+    "output": "release/"
+  },
+  "files": [
+    "**/*",
+    "!**/*.ts",
+    "!*.map",
+    "!package.json",
+    "!package-lock.json"
+  ],
+  "extraResources": [
+    {
+      "from": "www",
+      "to": "app",
+      "filter": [
+        "**/*"
+      ]
+    }
+  ],
+  "win": {
+    "icon": "www/assets/icon",
+    "target": [
+      "portable"
+    ]
+  },
+  "portable": {
+    "splashImage": "www/assets/icon/electron.bmp"
+  },
+  "mac": {
+    "icon": "www/assets/icon",
+    "target": [
+      "dmg"
+    ]
+  },
+  "linux": {
+    "icon": "www/assets/icon",
+    "target": [
+      "AppImage"
+    ]
+  }
+}

@@ -1,10 +1,11 @@
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { Platform, ToastController, AlertController } from '@ionic/angular';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { Confirmation, ConfirmationService, MessageService } from 'primeng/api';
 
 export class Utils {
 
-  public static async notificacao(mensagem: string, platform: Platform, toastController?: ToastController, messageService?: MessageService) {
+  public static async notificacao(mensagem: string, platform: Platform,
+    toastController?: ToastController, messageService?: MessageService) {
     if (platform.is('ios') || platform.is('android')) {
       if (toastController !== undefined) {
         const toast = await toastController.create({
@@ -24,11 +25,12 @@ export class Utils {
     }
   }
 
-  public static async dialog(header: string, message: string, handlerAccept: any, platform: Platform, alertController: AlertController, confirmationService: ConfirmationService) {
+  public static async dialog(titulo: string, mensagem: string, handlerAccept: any,
+    platform: Platform, alertController: AlertController, confirmationService: ConfirmationService) {
     if (platform.is('ios') || platform.is('android')) {
       const alert = await alertController.create({
-        header: header,
-        message: message,
+        header: titulo,
+        message: mensagem,
         buttons: [
           {
             text: 'Cancelar',
@@ -47,10 +49,10 @@ export class Utils {
 
       await alert.present();
     } else {
-      confirmationService.confirm({
+      const confirmation: Confirmation = {
         target: event.target,
-        header: header,
-        message: message,
+        header: titulo,
+        message: mensagem,
         icon: 'pi pi-exclamation-triangle',
         rejectLabel: 'Não',
         rejectIcon: 'pi pi-times',
@@ -61,11 +63,14 @@ export class Utils {
         accept: () => {
           handlerAccept();
         }
-      });
+      };
+
+      confirmationService.confirm(confirmation);
     }
   }
 
-  public static async salvarArquivo(filename: string, filetype: string, base64: string, platform: Platform, callbackSucesso?: any,) {
+  public static async salvarArquivo(filename: string, filetype: string,
+    base64: string, platform: Platform, callbackSucesso?: any,) {
     if (platform.is('ios') || platform.is('android')) {
       try {
         await Filesystem.writeFile({
@@ -73,9 +78,8 @@ export class Utils {
           data: 'data:' + filetype + ';base64,' + base64,
           directory: Directory.Documents
         });
-
       } catch (e) {
-        console.error('Erro ao salvar arquivo: ' + filename, e)
+        console.error('Erro ao salvar arquivo: ' + filename, e);
       }
     } else {
       const a = document.createElement('a');
@@ -153,7 +157,7 @@ export class Utils {
   }
 
   public static b64EncodeUnicode(str) {
-    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => {
       const charset = '0x' + p1;
       return String.fromCharCode(parseInt(charset, 16));
     }));

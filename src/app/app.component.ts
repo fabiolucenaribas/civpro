@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { DatePipe } from '@angular/common'
-import { Filesystem } from '@capacitor/filesystem';
+import { DatePipe } from '@angular/common';
 import { TemplateComponent } from './template/template.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgForm } from '@angular/forms';
@@ -110,10 +109,10 @@ export class AppComponent implements OnInit {
   }
 
   async baixarFormulario() {
-    let dateFormated = this.datepipe.transform(new Date(), 'dd_MM_yyyy HH_mm_ss');
+    const dateFormated = this.datepipe.transform(new Date(), 'dd_MM_yyyy HH_mm_ss');
     const filename = dateFormated + '.json';
     const json = JSON.stringify(this.formulario);
-    const base64 = Utils.b64EncodeUnicode(json)
+    const base64 = Utils.b64EncodeUnicode(json);
 
     await Utils.salvarArquivo(filename, 'text/plain', base64,
       this.platform, async () => {

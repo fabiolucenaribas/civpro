@@ -73,13 +73,13 @@ registerLocaleData(localePt);
     MessagesModule,
     MessageModule,
     NgxMaskModule.forRoot(maskConfig),
-    IonicModule.forRoot(), 
+    IonicModule.forRoot(),
     AppRoutingModule],
   providers: [
     DatePipe,
-    ConfirmationService, 
-    MessageService, 
-    { provide: LOCALE_ID, useValue: 'pt-BR' }, 
+    ConfirmationService,
+    MessageService,
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent],

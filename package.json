@@ -1,11 +1,19 @@
 {
   "name": "civpro",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "Fábio Lucena Ribas",
+  "homepage": "https://github.com/FabioLucenaRibas/civpro",
+  "main": "app/main.js",
   "scripts": {
+    "postinstall": "electron-builder install-app-deps",
     "ng": "ng",
     "start": "ng serve",
+    "start:host": "ng serve --host=192.168.1.20 --disable-host-check",
+    "start:electron": "ng build --base-href ./ && electron .",
+    "electron:build": "npm run build:prod && electron-builder build --publish=never",
+    "electron:serve-tsc": "tsc -p tsconfig.serve.json",
+    "build:prod": "npm run build:electron -- -c production",
+    "build:electron": "npm run electron:serve-tsc && ng build --base-href ./",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -58,6 +66,8 @@
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "5.3.0",
     "@typescript-eslint/parser": "5.3.0",
+    "electron": "^16.0.5",
+    "electron-builder": "^22.14.5",
     "eslint": "^7.6.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsdoc": "30.7.6",
@@ -74,5 +84,5 @@
     "ts-node": "~8.3.0",
     "typescript": "~4.4.4"
   },
-  "description": "An Ionic project"
+  "description": "CIVPRO - Geração de formulario em PDF."
 }

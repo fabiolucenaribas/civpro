@@ -1,6 +1,5 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { Filesystem } from '@capacitor/filesystem';
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
 import { Platform, ToastController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Formulario } from '../model';
@@ -58,11 +57,11 @@ export class TemplateComponent {
 
     if (this.platform.is('ios') || this.platform.is('android')) {
       pdfDocGenerator.getBase64((data) => {
-        let dateFormated = this.datepipe.transform(new Date(), 'dd_MM_yyyy HH_mm_ss');
+        const dateFormated = this.datepipe.transform(new Date(), 'dd_MM_yyyy HH_mm_ss');
         const filename = dateFormated + '.pdf';
         Utils.salvarArquivo(filename, 'application/pdf', data,
           this.platform, async () => {
-            await Utils.notificacao('Formulario exportado com sucesso.', this.platform, this.toastController)
+            await Utils.notificacao('Formulario exportado com sucesso.', this.platform, this.toastController);
           });
       });
     } else {
