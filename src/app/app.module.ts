@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -38,6 +39,8 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TemplateComponent } from './template/template.component';
+import { ViewerPdfComponent } from './viewer-pdf/viewer-pdf.component';
+import { HomeComponent } from './home/home.component';
 
 const maskConfig: Partial<IConfig> = {
   validation: true,
@@ -48,12 +51,15 @@ registerLocaleData(localePt);
 @NgModule({
   declarations: [
     AppComponent,
-    TemplateComponent
+    HomeComponent,
+    TemplateComponent,
+    ViewerPdfComponent
   ],
   entryComponents: [],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    NgxExtendedPdfViewerModule,
     HttpClientModule,
     FormsModule,
     InputTextModule,

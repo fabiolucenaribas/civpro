@@ -1,0 +1,413 @@
+<ion-app>
+  <ion-header  translucent>
+      <ion-toolbar>
+          <ion-title>CIVPRO</ion-title>
+      </ion-toolbar>
+  </ion-header>
+
+  <ion-content fullscreen>
+      <input type="file" id="file" (change)="carregarFormulario($event.target.files)" accept=".json,application/json"
+          style="display: none;">
+
+      <ion-fab  horizontal="end" vertical="top" slot="fixed" edge>
+          <ion-fab-button>
+              <ion-icon name="menu-outline"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-list side="start">
+              <ion-fab-button color="light" (click)="confirmaNovoFormulario($event)">
+                  <ion-icon name="add-circle-outline"></ion-icon>
+              </ion-fab-button>
+              <ion-fab-button color="light" (click)="carregar()">
+                  <ion-icon name="push-outline"></ion-icon>
+              </ion-fab-button>
+              <ion-fab-button color="light" (click)="baixarFormulario()">
+                  <ion-icon name="save-outline"></ion-icon>
+              </ion-fab-button>
+              <ion-fab-button color="light" (click)="exportar($event)">
+                  <ion-icon name="document-text-outline"></ion-icon>
+              </ion-fab-button>
+          </ion-fab-list>
+      </ion-fab>
+
+      <div class="layout-wrapper">
+          <div class="layout-main">
+              <div class="layout-main-content">
+                  <form #formFormulario="ngForm">
+                      <div *ngIf="!isPlataformMobile()" class="card">
+                          <p-menubar [model]="items" (click)="activeMenu($event)">
+                          </p-menubar>
+                      </div>
+
+                      <div class="card">
+                          <div class="p-formgrid p-grid p-ai-end">
+                              <div class="p-col-fixed" style="width:158px">
+                                  <img width="150" [src]='domSanitizer.bypassSecurityTrustUrl(formulario.imagem)'>
+                              </div>
+                              <div class="p-col">
+                                  <div class="p-field">
+                                      <input type="file" id="fileLogo" (change)="uploadLogo($event.target.files)"
+                                          accept="image/*" style="display: none;">
+                                      <label pButton for="fileLogo" label="Carregar" icon="pi pi-upload"
+                                          class="p-button-success p-mb-2"></label>
+                                  </div>
+
+                                  <div class="p-field">
+                                      <span class="p-float-label">
+                                          <input id="float-input" name="titulo" type="text" #titulo="ngModel"
+                                              pInputText style="width:100%" [(ngModel)]="formulario.titulo"
+                                              class="form-control" required>
+                                          <label for="float-input"><span class="p-error p-text-bold">* </span>Titulo
+                                              Formulario</label>
+                                      </span>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="p-fluid p-formgrid p-grid">
+                              <div class="p-field p-col-12 p-md-8 p-lg-8">
+                                  <span class="p-float-label">
+                                      <input id="float-input" type="text" [(ngModel)]="formulario.empreendimento"
+                                          name="empreendimento" class="form-control" pInputText>
+                                      <label for="float-input">Empreendimento</label>
+                                  </span>
+                              </div>
+                              <div class="p-field p-col-12 p-md-4 p-lg-4">
+                                  <span class="p-float-label">
+                                      <input id="float-input" type="text" [(ngModel)]="formulario.unidade"
+                                          name="unidade" #unidade="ngModel" class="form-control" pInputText required>
+                                      <label for="float-input"><span class="p-error p-text-bold">*
+                                          </span>Unidade(s)</label>
+                                  </span>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="card ">
+                          <p-tabView>
+                              <p-tabPanel
+                                  *ngFor="let cliente of formulario.dadosClientes; index as index; first as isFirst"
+                                  [header]="isFirst ? 'Cliente' : formulario.dadosClientes[0].dados.estadocivil === 'Solteiro' ? 'Cliente 2' : 'Cônjuge'"
+                                  [selected]="isFirst" leftIcon="pi pi-user">
+
+                                  <p-accordion>
+                                      <p-accordionTab header="Dados" [selected]="true">
+
+                                          <div class="p-fluid p-formgrid p-grid">
+                                              <div class="p-field p-col">
+                                                  <span class="p-float-label">
+                                                      <input id="float-input" type="text"
+                                                          [(ngModel)]="cliente.dados.nome" #nome="ngModel"
+                                                          name="dados.nome{{index}}" class="form-control" pInputText
+                                                          required>
+                                                      <label for="float-input"><span class="p-error p-text-bold">*
+                                                          </span>Nome</label>
+                                                  </span>
+                                              </div>
+                                          </div>
+
+                                          <div class="p-fluid p-formgrid p-grid">
+                                              <div class="p-field p-col-12 p-md-8 p-lg-8">
+                                                  <div class="p-inputgroup">
+                                                      <span class="p-inputgroup-addon">
+                                                          <i class="pi pi-envelope"></i>
+                                                      </span>
+                                                      <span class="p-float-label">
+                                                          <input type="email" id="inputgroup"
+                                                              [(ngModel)]="cliente.dados.email"
+                                                              name="dados.email{{index}}" class="form-control"
+                                                              pInputText email="true" />
+                                                          <label for="inputgroup">Email</label>
+                                                      </span>
+                                                  </div>
+                                              </div>
+
+                                              <div class="p-field p-col-12 p-md-4 p-lg-4">
+                                                  <span class="p-float-label">
+                                                      <input id="float-input" [(ngModel)]="cliente.dados.telefone"
+                                                          #telefone="ngModel" name="dados.telefone{{index}}"
+                                                          class="form-control" pInputText
+                                                          [dropSpecialCharacters]="false"
+                                                          mask="(00) 0000-0000||(00) 0 0000-0000" required />
+                                                      <label for="float-input"><span class="p-error p-text-bold">*
+                                                          </span>Telefone</label>
+                                                  </span>
+                                              </div>
+                                          </div>
+
+                                          <div class="p-fluid p-formgrid p-grid">
+                                              <div class="p-field p-col">
+                                                  <span class="p-float-label">
+                                                      <input id="float-input" type="text"
+                                                          [(ngModel)]="cliente.dados.endereco" #endereco="ngModel"
+                                                          name="dados.endereco{{index}}" class="form-control"
+                                                          pInputText required>
+                                                      <label for="float-input"><span class="p-error p-text-bold">*
+                                                          </span>Endereço</label>
+                                                  </span>
+                                              </div>
+                                          </div>
+
+                                          <div class="p-fluid p-formgrid p-grid">
+                                              <div class="p-field p-col-12 p-md-4 p-lg-4">
+                                                  <span class="p-float-label">
+                                                      <input id="float-input" name="dados.cpf{{index}}"
+                                                          [(ngModel)]="cliente.dados.cpf" #cpf="ngModel"
+                                                          class="form-control" pInputText
+                                                          [dropSpecialCharacters]="false" mask="000.000.000-00"
+                                                          (blur)="validarCpf($event)" required />
+                                                      <label for="float-input"><span class="p-error p-text-bold">*
+                                                          </span>CPF</label>
+                                                  </span>
+                                              </div>
+
+                                              <div class="p-field p-col-12 p-md-4 p-lg-4">
+                                                  <span class="p-float-label">
+                                                      <input id="float-input" type="text"
+                                                          [(ngModel)]="cliente.dados.rg" #rg="ngModel"
+                                                          name="dados.rg{{index}}" class="form-control" pInputText
+                                                          required>
+                                                      <label for="float-input"><span class="p-error p-text-bold">*
+                                                          </span>RG</label>
+                                                  </span>
+                                              </div>
+
+                                              <div class="p-field p-col-12 p-md-4 p-lg-4">
+                                                  <div class="p-inputgroup">
+                                                      <span class="p-inputgroup-addon">
+                                                          <i class="pi pi-calendar"></i>
+                                                      </span>
+                                                      <span class="p-float-label">
+                                                          <p-calendar id="inputgroup"
+                                                              [(ngModel)]="cliente.dados.dataNascimento"
+                                                              name="dados.dataNascimento{{index}}"
+                                                              class="form-control" dateFormat="dd/mm/yy"
+                                                              styleClass="calendar">
+                                                          </p-calendar>
+                                                          <label for="inputgroup">Nascimento</label>
+                                                      </span>
+                                                  </div>
+                                              </div>
+                                          </div>
+
+                                          <div class="p-fluid p-formgrid p-grid">
+                                              <div class="p-field p-col">
+                                                  <span class="p-float-label">
+                                                      <input id="float-input" type="text" pInputText
+                                                          [(ngModel)]="cliente.dados.formacao" #formacao="ngModel"
+                                                          name="dados.formacao{{index}}" class="form-control"
+                                                          required>
+                                                      <label for="float-input"><span class="p-error p-text-bold">*
+                                                          </span>Formação</label>
+                                                  </span>
+                                              </div>
+                                          </div>
+
+                                          <div *ngIf="isFirst"
+                                              class="p-fluid p-formgrid p-grid p-ai-center vertical-container min-height">
+                                              <div class="p-field p-col-12 p-md-4 p-lg-4">
+                                                  <p-selectButton [options]="estadoCivilOpcoes"
+                                                      name="dados.estadocivil{{index}}" (onChange)="gerarCliente2()"
+                                                      [(ngModel)]="cliente.dados.estadocivil" optionLabel="label"
+                                                      optionValue="value"></p-selectButton>
+                                              </div>
+
+                                              <div *ngIf="cliente.dados.estadocivil==='Outros'"
+                                                  class="p-field p-col-12 p-md-4 p-lg-4">
+                                                  <span class="p-float-label">
+                                                      <input id="float-input" type="text"
+                                                          #estadocivilespecifico="ngModel"
+                                                          [(ngModel)]="cliente.dados.estadocivilespecifico"
+                                                          name="dados.estadocivilespecifico{{index}}"
+                                                          class="form-control" pInputText required>
+                                                      <label for="float-input"><span class="p-error p-text-bold">*
+                                                          </span>Especifique</label>
+                                                  </span>
+                                              </div>
+
+                                              <div *ngIf="isFirst && cliente.dados.estadocivil==='Casado' || cliente.dados.estadocivil==='Outros'"
+                                                  class="p-field p-col-12 p-md-4 p-lg-4">
+                                                  <span class="p-float-label">
+                                                      <input id="float-input" type="text"
+                                                          [(ngModel)]="cliente.dados.regimeComunhao"
+                                                          #regimeComunhao="ngModel"
+                                                          name="dados.regimeComunhao{{index}}" class="form-control"
+                                                          pInputText required>
+                                                      <label for="float-input"><span class="p-error p-text-bold">*
+                                                          </span>Regime de comunhão</label>
+                                                  </span>
+                                              </div>
+                                          </div>
+                                      </p-accordionTab>
+                                      <p-accordionTab header="Dados Empresa">
+                                          <div class="p-fluid p-formgrid p-grid">
+                                              <div class="p-field p-col">
+                                                  <span class="p-float-label">
+                                                      <input id="float-input" type="text"
+                                                          [(ngModel)]="cliente.dadosEmpresa.razaoSocial"
+                                                          name="dadosEmpresa.razaoSocial{{index}}"
+                                                          class="form-control" pInputText>
+                                                      <label for="float-input">Razão social</label>
+                                                  </span>
+                                              </div>
+                                          </div>
+
+                                          <div class="p-fluid p-formgrid p-grid">
+                                              <div class="p-field p-col">
+                                                  <span class="p-float-label">
+                                                      <input id="float-input" type="text"
+                                                          [(ngModel)]="cliente.dadosEmpresa.endereco"
+                                                          name="dadosEmpresa.endereco{{index}}" class="form-control"
+                                                          pInputText>
+                                                      <label for="float-input">Endereço</label>
+                                                  </span>
+                                              </div>
+                                          </div>
+
+                                          <div class="p-fluid p-formgrid p-grid">
+                                              <div class="p-field p-col-12 p-md-9 p-lg-9">
+                                                  <span class="p-float-label">
+                                                      <input id="float-input" type="text"
+                                                          [(ngModel)]="cliente.dadosEmpresa.funcao"
+                                                          name="dadosEmpresa.funcao{{index}}" class="form-control"
+                                                          pInputText>
+                                                      <label for="float-input">Função</label>
+                                                  </span>
+                                              </div>
+
+                                              <div class="p-field p-col-12 p-md-3 p-lg-3">
+                                                  <span class="p-float-label">
+                                                      <p-inputNumber id="float-input" [min]="0" prefix="R$ "
+                                                          mode="decimal" locale="pt-BR" [minFractionDigits]="2"
+                                                          [(ngModel)]="cliente.dadosEmpresa.salario"
+                                                          name="dadosEmpresa.salario{{index}}" class="form-control">
+                                                      </p-inputNumber>
+                                                      <label for="float-input">Salário</label>
+                                                  </span>
+                                              </div>
+                                          </div>
+
+                                          <div class="p-fluid p-formgrid p-grid">
+                                              <div class="p-field p-col-12 p-md-8 p-lg-8">
+                                                  <div class="p-inputgroup">
+                                                      <span class="p-inputgroup-addon">
+                                                          <i class="pi pi-envelope"></i>
+                                                      </span>
+                                                      <span class="p-float-label">
+                                                          <input type="text" id="inputgroup"
+                                                              [(ngModel)]="cliente.dadosEmpresa.email" email="true"
+                                                              name="dadosEmpresa.email{{index}}" class="form-control"
+                                                              pInputText />
+                                                          <label for="inputgroup">Email</label>
+                                                      </span>
+                                                  </div>
+                                              </div>
+
+                                              <div class="p-field p-col-12 p-md-4 p-lg-4">
+                                                  <span class="p-float-label">
+                                                      <input id="float-input"
+                                                          [(ngModel)]="cliente.dadosEmpresa.telefone"
+                                                          name="dadosEmpresa.telefone{{index}}" class="form-control"
+                                                          pInputText [dropSpecialCharacters]="false"
+                                                          mask="(00) 0000-0000||(00) 0 0000-0000" />
+                                                      <label for="float-input">Telefone</label>
+                                                  </span>
+                                              </div>
+                                          </div>
+                                      </p-accordionTab>
+                                      <p-accordionTab *ngIf="isFirst" header="Referências Pessoais">
+                                          <div class="p-fluid p-formgrid p-grid">
+                                              <div class="p-field p-col-12 p-md-7 p-lg-7">
+                                                  <span class="p-float-label">
+                                                      <input id="float-input" type="text"
+                                                          [(ngModel)]="cliente.referenciaPessoal[0].nome"
+                                                          #nome="ngModel" name="referenciaPessoal[0].nome{{index}}"
+                                                          class="form-control" pInputText required>
+                                                      <label for="float-input"><span class="p-error p-text-bold">*
+                                                          </span>Nome</label>
+                                                  </span>
+                                              </div>
+
+                                              <div class="p-field p-col-12 p-md-5 p-lg-5">
+                                                  <span class="p-float-label">
+                                                      <input id="float-input"
+                                                          [(ngModel)]="cliente.referenciaPessoal[0].telefone"
+                                                          #telefone="ngModel"
+                                                          name="referenciaPessoal[0].telefone{{index}}"
+                                                          class="form-control" pInputText
+                                                          [dropSpecialCharacters]="false"
+                                                          mask="(00) 0000-0000||(00) 0 0000-0000" required />
+                                                      <label for="float-input"><span class="p-error p-text-bold">*
+                                                          </span>Telefone</label>
+                                                  </span>
+                                              </div>
+                                          </div>
+
+                                          <div class="p-fluid p-formgrid p-grid">
+                                              <div class="p-field p-col-12 p-md-7 p-lg-7">
+                                                  <span class="p-float-label">
+                                                      <input id="float-input" type="text"
+                                                          [(ngModel)]="cliente.referenciaPessoal[1].nome"
+                                                          #nome="ngModel" name="referenciaPessoal[1].nome{{index}}"
+                                                          class="form-control" pInputText required>
+                                                      <label for="float-input"><span class="p-error p-text-bold">*
+                                                          </span>Nome</label>
+                                                  </span>
+                                              </div>
+
+                                              <div class="p-field p-col-12 p-md-5 p-lg-5">
+                                                  <span class="p-float-label">
+                                                      <input id="float-input"
+                                                          [(ngModel)]="cliente.referenciaPessoal[1].telefone"
+                                                          #telefone="ngModel"
+                                                          name="referenciaPessoal[1].telefone{{index}}"
+                                                          class="form-control" pInputText
+                                                          [dropSpecialCharacters]="false"
+                                                          mask="(00) 0000-0000||(00) 0 0000-0000" required />
+                                                      <label for="float-input"><span class="p-error p-text-bold">*
+                                                          </span>Telefone</label>
+                                                  </span>
+                                              </div>
+                                          </div>
+                                      </p-accordionTab>
+                                  </p-accordion>
+                              </p-tabPanel>
+                          </p-tabView>
+                      </div>
+
+                      <div class="card">
+                          <h5>Especificação da Proposta</h5>
+                          <div class="p-fluid p-formgrid p-grid">
+                              <div class="p-field p-col-12 p-md-3 p-lg-2">
+                                  <span class="p-float-label">
+                                      <p-inputNumber id="float-input" [(ngModel)]="formulario.valorImovel"
+                                          name="valorImovel" #valorImovel="ngModel" class="form-control" [min]="0"
+                                          prefix="R$ " mode="decimal" locale="pt-BR" [minFractionDigits]="2" required>
+                                      </p-inputNumber>
+                                      <label for="float-input"><span class="p-error p-text-bold">* </span>Valor do
+                                          imóvel</label>
+                                  </span>
+                              </div>
+                          </div>
+
+                          <div class="p-fluid p-formgrid p-grid">
+                              <div class="p-field p-col-12">
+                                  <span class="p-float-label">
+                                      <textarea inputId="textarea" [(ngModel)]="formulario.formaPagamento"
+                                          name="formaPagamento" #formaPagamento="ngModel" class="form-control"
+                                          rows="8" cols="90" pInputTextarea required></textarea>
+                                      <label for="textarea"><span class="p-error p-text-bold">* </span>Forma de
+                                          pagamento</label>
+                                  </span>
+                              </div>
+                          </div>
+                      </div>
+
+                  </form>
+              </div>
+          </div>
+          <p-toast></p-toast>
+          <p-confirmDialog [style]="{'white-space': 'pre-wrap'}" [baseZIndex]="10000"></p-confirmDialog>
+          <app-template #pdfTemplate [formulario]="formulario"></app-template>
+      </div>
+  </ion-content>
+</ion-app>

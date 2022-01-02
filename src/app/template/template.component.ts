@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Platform, ToastController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -21,6 +22,7 @@ export class TemplateComponent {
   @ViewChild('pdfTemplate') pdfTemplate: ElementRef;
 
   constructor(
+    private router: Router,
     public domSanitizer: DomSanitizer,
     public toastController: ToastController,
     public platform: Platform,
@@ -59,10 +61,10 @@ export class TemplateComponent {
       pdfDocGenerator.getBase64((data) => {
         const dateFormated = this.datepipe.transform(new Date(), 'dd_MM_yyyy HH_mm_ss');
         const filename = dateFormated + '.pdf';
-        Utils.salvarArquivo(filename, 'application/pdf', data,
-          this.platform, async () => {
-            await Utils.notificacao('Formulario exportado com sucesso.', this.platform, this.toastController);
-          });
+
+        this.router.navigateByUrl('viewer', {
+          state: { data: { name: filename, base64: data } }
+        });
       });
     } else {
       pdfDocGenerator.open();

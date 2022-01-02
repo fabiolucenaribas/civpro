@@ -2,9 +2,14 @@
 // http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
+
+ion-content {
+  --ion-background-color: linear-gradient(180deg, #2E323F 0%, #0A061A 100%);
+}
+
 :root {
-  --ion-background-color: linear-gradient(180deg, #F6F9FC 0%, #ECECF9 100%);
-  
+  color-scheme: dark light;
+
   /** primary **/
   --ion-color-primary: #222428;
   --ion-color-primary-rgb: 34, 36, 40;

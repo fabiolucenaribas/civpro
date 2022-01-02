@@ -39,6 +39,7 @@
     "@ionic/angular": "^6.0.0",
     "html-to-pdfmake": "^2.3.7",
     "jspdf": "^2.5.0",
+    "ngx-extended-pdf-viewer": "^11.0.2",
     "ngx-mask": "^13.0.1",
     "pdfmake": "^0.2.4",
     "primeflex": "^2.0.0",

@@ -26,7 +26,7 @@ export class Utils {
   }
 
   public static async dialog(titulo: string, mensagem: string, handlerAccept: any,
-    platform: Platform, alertController: AlertController, confirmationService: ConfirmationService) {
+    platform: Platform, alertController: AlertController, confirmationService: ConfirmationService, event?: Event) {
     if (platform.is('ios') || platform.is('android')) {
       const alert = await alertController.create({
         header: titulo,
