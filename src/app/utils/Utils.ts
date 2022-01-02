@@ -71,7 +71,7 @@ export class Utils {
 
   public static async salvarArquivo(filename: string, filetype: string,
     base64: string, platform: Platform, callbackSucesso?: any,) {
-    if (platform.is('ios') || platform.is('android')) {
+    if (!platform.is('mobileweb') && (platform.is('ios') || platform.is('android'))) {
       try {
         await Filesystem.writeFile({
           path: filename,

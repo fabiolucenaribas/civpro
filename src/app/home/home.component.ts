@@ -50,6 +50,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.platform.platforms());
     this.primengConfig.ripple = true;
     this.carregarItemsMenu();
     this.recuperarEstadoFormulario();
