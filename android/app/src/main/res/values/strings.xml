@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CIVPRO</string>
+    <string name="title_activity_main">CIVPRO</string>
+    <string name="package_name">flr.formulario.civpro</string>
+    <string name="custom_url_scheme">flr.formulario.civpro</string>
+</resources>

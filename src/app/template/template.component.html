@@ -1,0 +1,124 @@
+<div style="display: none;">
+    <div #pdfTemplate>
+        <table>
+            <tr>
+                <td style="text-align: center;">
+                    <img width="100" [src]="domSanitizer.bypassSecurityTrustUrl(formulario.imagem)">
+                </td>
+                <td style="margin-top: 40px; text-align: center; " colspan="2">
+                    {{formulario.titulo}}</td>
+            </tr>
+            <tr>
+                <td colspan="2">EMPREENDIMENTO: {{formulario.empreendimento}}</td>
+                <td>UNIDADE (S): {{formulario.unidade}}</td>
+            </tr>
+            <tbody *ngFor="let cliente of formulario.dadosClientes; index as index; first as isFirst">
+                <tr>
+                    <th style="text-align: center;" colspan="3">{{isFirst ? 'CLIENTE' :
+                        formulario.dadosClientes[0].dados.estadocivil === 'Solteiro' ? 'CLIENTE 2' : 'CÔNJUGE'}}</th>
+                </tr>
+                <tr>
+                    <td colspan="3">NOME: {{cliente.dados.nome}}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">EMAIL: {{cliente.dados.email}}</td>
+                    <td>TELEFONE: {{cliente.dados.telefone}}</td>
+                </tr>
+                <tr>
+                    <td colspan="3">ENDERECO: {{cliente.dados.endereco}}</td>
+                </tr>
+                <tr>
+                    <td colspan="1">CPF: {{cliente.dados.cpf}}</td>
+                    <td colspan="1">RG: {{cliente.dados.rg}}</td>
+                    <td colspan="1">NASCIMENTO: {{cliente.dados.dataNascimento | date: 'dd/MM/yyyy'}}</td>
+                </tr>
+                <tr *ngIf="isFirst && cliente.dados.estadocivil !=='Solteiro' || !isFirst">
+                    <td colspan="3">FORMAÇÃO: {{cliente.dados.formacao}}</td>
+                </tr>
+                <tr *ngIf="isFirst && cliente.dados.estadocivil==='Solteiro'">
+                    <td colspan="2">FORMAÇÃO: {{cliente.dados.formacao}}</td>
+                    <td>ESTADO CIVIL: {{cliente.dados.estadocivil}}</td>
+                </tr>
+                <tr *ngIf="isFirst && (cliente.dados.estadocivil==='Casado' || cliente.dados.estadocivil==='Outros')">
+                    <td>ESTADO CIVIL: {{cliente.dados.estadocivil === 'Outros' ?
+                        cliente.dados.estadocivilespecifico :
+                        cliente.dados.estadocivil}}</td>
+                    <td colspan="2">
+                        REGUME DE COMUNHÃO: {{cliente.dados.regimeComunhao}}
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align: center;" colspan="3">DADOS EMPRESA</th>
+                </tr>
+                <tr >
+                    <td colspan="3">RAZÃO SOCIAL: {{cliente.dadosEmpresa.razaoSocial}}</td>
+                </tr>
+                <tr>
+                    <td colspan="3">ENDEREÇO: {{cliente.dadosEmpresa.endereco}}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">FUNÇÃO: {{cliente.dadosEmpresa.funcao}}</td>
+                    <td>SALARIO: {{cliente.dadosEmpresa.salario | number:'1.2-2':'pt-BR'}}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">EMAIL: {{cliente.dadosEmpresa.email}}</td>
+                    <td>TELEFONE: {{cliente.dadosEmpresa.telefone}}</td>
+                </tr>
+                <tr *ngIf="isFirst">
+                    <th style="text-align: center;" colspan="3">REFERÊNCIAS PESSOAIS (DUAS PESSOAS COMO REFERÊNCIAS)
+                    </th>
+                </tr>
+                <tr *ngIf="isFirst">
+                    <td colspan="2">NOME: {{cliente.referenciaPessoal[0].nome}}</td>
+                    <td>TELEFONE: {{cliente.referenciaPessoal[0].telefone}}</td>
+                </tr>
+                <tr *ngIf="isFirst">
+                    <td colspan="2">NOME: {{cliente.referenciaPessoal[1].nome}}</td>
+                    <td>TELEFONE: {{cliente.referenciaPessoal[1].telefone}}</td>
+                </tr>
+            </tbody>
+            <tr >
+                <th style="text-align: center;" colspan="3">ESPECIFICAÇÃO DA PROPOSTA</th>
+            </tr>
+            <tr>
+                <td colspan="3">VALOR IMÓVEL: {{formulario.valorImovel | number:'1.2-2':'pt-BR' }}</td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <table>
+                        <tbody>
+                            <td style="border-left: none; border-right: none; border-bottom: none; border-top: none;">FORMA DE PAGAMENTO:</td>
+                            <td
+                                style="white-space: pre-wrap; border-left: none; border-right: none; border-bottom: none; border-top: none;">{{formulario.formaPagamento}}</td>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="margin-top: 5px; border-right: none; border-bottom: none" colspan="2">DE ACORDO:
+                </td>
+                <td style="text-align: center; margin-top: 5px; border-left: none; border-bottom: none">DATA:
+                    ____/____/____ </td>
+            </tr>
+            <tr>
+                <td colspan="1"
+                    style="margin-top: 25px; text-align: center; border-right: none; border-bottom: none; border-top: none;">
+                    __________________________ </td>
+                <td colspan="1"
+                    style="margin-top: 25px; text-align: center; border-left: none; border-right: none; border-bottom: none; border-top: none;">
+                    __________________________ </td>
+                <td colspan="1"
+                    style="margin-top: 25px; text-align: center; border-left: none; border-bottom: none; border-top: none;">
+                    __________________________ </td>
+            </tr>
+            <tr>
+                <td colspan="1" style="text-align: center; border-right: none; border-top: none">ASS.
+                    COMPRADOR </td>
+                <td colspan="1"
+                    style="text-align: center; border-left: none; border-right: none; border-top: none">
+                    ASS. COMPRADOR 2 </td>
+                <td colspan="1" style="text-align: center; border-left: none; border-top: none">CONSTRUTORA</td>
+            </tr>
+        </table>
+    </div>
+</div>

@@ -3,6 +3,8 @@
 
 /** Ionic CSS Variables **/
 :root {
+  --ion-background-color: linear-gradient(180deg, #F6F9FC 0%, #ECECF9 100%);
+  
   /** primary **/
   --ion-color-primary: #222428;
   --ion-color-primary-rgb: 34, 36, 40;
@@ -83,6 +85,8 @@
    */
 
   body {
+    --ion-background-color: linear-gradient(180deg, #2E323F 0%, #0A061A 100%);
+
     --ion-color-primary: #f4f5f8;
     --ion-color-primary-rgb: 244, 245, 248;
     --ion-color-primary-contrast: #000000;
