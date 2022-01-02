@@ -166,6 +166,7 @@
   }
 
   .loading-wrapper {
+    background-color: #0A061A;
     height: 100vh;
     margin: 0;
     padding: 0;
