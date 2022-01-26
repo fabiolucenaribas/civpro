@@ -39,7 +39,9 @@ export class TemplateComponent {
     };
 
     const html = htmlToPdfmake(innerHTML, options);
+    html[0].table.widths='*';
 
+    console.log(html);
     const documentDefinition = {
       content: html,
 
