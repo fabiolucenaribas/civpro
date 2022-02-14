@@ -26,7 +26,7 @@ export class Utils {
   }
 
   public static async dialog(titulo: string, mensagem: string, handlerAccept: any,
-    platform: Platform, alertController: AlertController, confirmationService: ConfirmationService, event?: Event) {
+    platform: Platform, alertController: AlertController, confirmationService: ConfirmationService) {
     if (platform.is('ios') || platform.is('android')) {
       const alert = await alertController.create({
         header: titulo,
@@ -50,7 +50,6 @@ export class Utils {
       await alert.present();
     } else {
       const confirmation: Confirmation = {
-        target: event.target,
         header: titulo,
         message: mensagem,
         icon: 'pi pi-exclamation-triangle',

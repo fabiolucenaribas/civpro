@@ -2,32 +2,18 @@
     <ion-header *ngIf="isPlataformMobile()" translucent>
         <ion-toolbar>
             <ion-title>CIVPRO</ion-title>
+
+            <ion-buttons slot="end">
+                <ion-button id="options" (click)="presentOptionsActionSheet()">
+                    <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+                </ion-button>
+            </ion-buttons>
         </ion-toolbar>
     </ion-header>
 
     <ion-content fullscreen>
         <input type="file" id="file" (change)="carregarFormulario($event.target.files)" accept=".json,application/json"
             style="display: none;">
-
-        <ion-fab *ngIf="isPlataformMobile()" horizontal="end" vertical="top" slot="fixed" edge>
-            <ion-fab-button>
-                <ion-icon name="menu-outline"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-list side="start">
-                <ion-fab-button color="light" (click)="confirmaNovoFormulario($event)">
-                    <ion-icon name="add-circle-outline"></ion-icon>
-                </ion-fab-button>
-                <ion-fab-button color="light" (click)="carregar()">
-                    <ion-icon name="push-outline"></ion-icon>
-                </ion-fab-button>
-                <ion-fab-button color="light" (click)="baixarFormulario()">
-                    <ion-icon name="save-outline"></ion-icon>
-                </ion-fab-button>
-                <ion-fab-button color="light" (click)="exportar($event)">
-                    <ion-icon name="document-text-outline"></ion-icon>
-                </ion-fab-button>
-            </ion-fab-list>
-        </ion-fab>
 
         <div class="layout-wrapper">
             <div class="layout-main">

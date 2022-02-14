@@ -7,7 +7,6 @@ import { Formulario } from '../model';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import pdfMake from 'pdfmake/build/pdfmake';
 import htmlToPdfmake from 'html-to-pdfmake';
-import { Utils } from '../utils/Utils';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Platform, ToastController, AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { Platform, ToastController, AlertController, ActionSheetController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DatePipe } from '@angular/common';
 import { NgForm } from '@angular/forms';
@@ -34,19 +35,25 @@ export class HomeComponent implements OnInit {
 
   constructor(
     public domSanitizer: DomSanitizer,
+    private router: Router,
+    private platform: Platform,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private primengConfig: PrimeNGConfig,
     private toastController: ToastController,
-    private platform: Platform,
     private datepipe: DatePipe,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private actionSheetController: ActionSheetController
   ) {
     this.estadoCivilOpcoes = [
       { label: 'Solteiro', value: 'Solteiro' },
       { label: 'Casado', value: 'Casado' },
       { label: 'Outros', value: 'Outros' }
     ];
+
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      this.router.navigateByUrl('home');
+    });
   }
 
   ngOnInit() {
@@ -104,9 +111,9 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  exportar(event: Event) {
+  exportar() {
     if (!this.formFormulario.form.valid) {
-      this.confirmarExporta(event);
+      this.confirmarExporta();
     } else {
       this.gerarPdf();
     }
@@ -119,18 +126,18 @@ export class HomeComponent implements OnInit {
     this.templateComponent.gerarPdf();
   }
 
-  async confirmaNovoFormulario(event: Event) {
+  async confirmaNovoFormulario() {
     await Utils.dialog('Atenção!', 'Tem certeza de que deseja continuar? \nO formulário atual será descartado.', async () => {
       localStorage.removeItem(HomeComponent.formularioKey);
       this.formulario = new Formulario();
       await Utils.notificacao('Um novo formulario foi gerado.', this.platform, this.toastController, this.messageService);
-    }, this.platform, this.alertController, this.confirmationService, event);
+    }, this.platform, this.alertController, this.confirmationService);
   }
 
-  async confirmarExporta(event: Event) {
+  async confirmarExporta() {
     await Utils.dialog('Atenção!', 'Ainda possui campos obrigatórios não preenchidos.\nDeseja continuar?', async () => {
       this.gerarPdf();
-    }, this.platform, this.alertController, this.confirmationService, event);
+    }, this.platform, this.alertController, this.confirmationService);
   }
 
   uploadLogo(files: FileList) {
@@ -161,7 +168,7 @@ export class HomeComponent implements OnInit {
         id: 'novo',
         label: 'Novo',
         icon: 'pi pi-fw pi-plus',
-        command: (event: Event) => { this.confirmaNovoFormulario(event); }
+        command: (event: Event) => { this.confirmaNovoFormulario(); }
       },
       {
         id: 'carregar',
@@ -179,7 +186,7 @@ export class HomeComponent implements OnInit {
         label: 'Exportar',
         icon: 'pi pi-fw pi-file-pdf',
         target: 'file',
-        command: (event: Event) => { this.exportar(event); }
+        command: (event: Event) => { this.exportar(); }
       }
     ];
   }
@@ -194,7 +201,56 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  async presentOptionsActionSheet() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Opções',
+      buttons: [{
+        text: 'Novo',
+        role: 'novo',
+        icon: this.isPlataformMobileAndroid() ? 'add-circle-outline' : '',
+        handler: () => {
+          this.confirmaNovoFormulario();
+        }
+      }, {
+        text: 'Carregar',
+        icon: this.isPlataformMobileAndroid() ? 'push-outline' : '',
+        handler: () => {
+          this.carregar();
+        }
+      }, {
+        text: 'Salvar',
+        icon: this.isPlataformMobileAndroid() ? 'save-outline' : '',
+        handler: () => {
+          this.baixarFormulario();
+        }
+      }, {
+        text: 'Exportar',
+        icon: this.isPlataformMobileAndroid() ? 'document-text-outline' : '',
+        handler: () => {
+          this.exportar();
+        }
+      }, {
+        text: 'Cancelar',
+        icon: 'close',
+        role: 'cancelar',
+        handler: () => { }
+      }]
+    });
+    await actionSheet.present();
+
+    const { role, data } = await actionSheet.onDidDismiss();
+    console.log('onDidDismiss resolved with role and data', role, data);
+  }
+
   isPlataformMobile(): boolean {
-    return this.platform.is('ios') || this.platform.is('android');
+    return this.isPlataformMobileIos() || this.isPlataformMobileAndroid();
+  }
+
+  isPlataformMobileIos(): boolean {
+    return this.platform.is('ios');
+  }
+
+  isPlataformMobileAndroid(): boolean {
+    return this.platform.is('android');
   }
 }
