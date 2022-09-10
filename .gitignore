@@ -55,3 +55,6 @@ node_modules
 !.vscode/*.code-snippets
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode
+/test-results/
+/playwright-report/
+/playwright/.cache/
