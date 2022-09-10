@@ -15,7 +15,8 @@
     "build:prod": "npm run build:electron -- -c production",
     "build:electron": "npm run electron:serve-tsc && ng build --base-href ./",
     "build": "ng build",
-    "test": "ng test",
+    "test": "ng test --watch=false",
+    "test:watch": "ng test",
     "lint": "ng lint",
     "e2e": "npm run build:prod && playwright test -c e2e/playwright.config.ts e2e/"
   },
