@@ -37,7 +37,6 @@
     "@capacitor/keyboard": "4.0.1",
     "@capacitor/status-bar": "4.0.1",
     "@ionic/angular": "^6.2.6",
-    "dmg-license": "^1.0.11",
     "html-to-pdfmake": "^2.4.5",
     "jspdf": "^2.5.1",
     "ngx-extended-pdf-viewer": "^14.5.3",
