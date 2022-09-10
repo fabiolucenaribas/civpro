@@ -25,6 +25,7 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
+        "max-len": "off",
         "prefer-arrow/prefer-arrow-functions": 0,
         "@angular-eslint/directive-selector":  0,
         "@angular-eslint/component-selector": [
@@ -45,7 +46,6 @@
         "plugin:@angular-eslint/template/recommended"
       ],
       "rules": {
-        "max-len": "off"
       }
     }
   ]
