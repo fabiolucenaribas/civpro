@@ -49,45 +49,45 @@ const maskConfig: Partial<IConfig> = {
 registerLocaleData(localePt);
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    TemplateComponent,
-    ViewerPdfComponent
-  ],
-  entryComponents: [],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    NgxExtendedPdfViewerModule,
-    HttpClientModule,
-    FormsModule,
-    InputTextModule,
-    InputNumberModule,
-    InputTextareaModule,
-    ButtonModule,
-    SelectButtonModule,
-    CalendarModule,
-    TableModule,
-    TabViewModule,
-    AccordionModule,
-    MenubarModule,
-    DialogModule,
-    ConfirmDialogModule,
-    ConfirmPopupModule,
-    ToastModule,
-    MessagesModule,
-    MessageModule,
-    NgxMaskModule.forRoot(maskConfig),
-    IonicModule.forRoot(),
-    AppRoutingModule],
-  providers: [
-    DatePipe,
-    ConfirmationService,
-    MessageService,
-    { provide: LOCALE_ID, useValue: 'pt-BR' },
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
-  ],
-  bootstrap: [AppComponent],
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        TemplateComponent,
+        ViewerPdfComponent
+    ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        NgxExtendedPdfViewerModule,
+        HttpClientModule,
+        FormsModule,
+        InputTextModule,
+        InputNumberModule,
+        InputTextareaModule,
+        ButtonModule,
+        SelectButtonModule,
+        CalendarModule,
+        TableModule,
+        TabViewModule,
+        AccordionModule,
+        MenubarModule,
+        DialogModule,
+        ConfirmDialogModule,
+        ConfirmPopupModule,
+        ToastModule,
+        MessagesModule,
+        MessageModule,
+        NgxMaskModule.forRoot(maskConfig),
+        IonicModule.forRoot(),
+        AppRoutingModule
+    ],
+    providers: [
+        DatePipe,
+        ConfirmationService,
+        MessageService,
+        { provide: LOCALE_ID, useValue: 'pt-BR' },
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}
