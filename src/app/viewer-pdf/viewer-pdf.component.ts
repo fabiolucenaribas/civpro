@@ -19,11 +19,11 @@ export class ViewerPdfComponent implements OnInit {
     private toastController: ToastController
   ) {
     const nav = this.router.getCurrentNavigation();
-    this.data = nav.extras.state.data;
+    this.data = nav?.extras?.state?.data;
   }
 
   ngOnInit() {
-    this.pdfSrc = this.data.base64;
+    this.pdfSrc = this.data?.base64;
   }
 
   exportarPDF() {

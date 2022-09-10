@@ -3,16 +3,16 @@
         <table>
             <tr>
                 <td style="text-align: center;">
-                    <img width="100" [src]="domSanitizer.bypassSecurityTrustUrl(formulario.imagem)">
+                    <img width="100" [src]="domSanitizer.bypassSecurityTrustUrl(formulario?.imagem)">
                 </td>
                 <td style="margin-top: 40px; text-align: center;" colspan="2">
-                    {{formulario.titulo}}</td>
+                    {{formulario?.titulo}}</td>
             </tr>
             <tr>
-                <td colspan="2">EMPREENDIMENTO: {{formulario.empreendimento}}</td>
-                <td>UNIDADE (S): {{formulario.unidade}}</td>
+                <td colspan="2">EMPREENDIMENTO: {{formulario?.empreendimento}}</td>
+                <td>UNIDADE (S): {{formulario?.unidade}}</td>
             </tr>
-            <tbody *ngFor="let cliente of formulario.dadosClientes; index as index; first as isFirst">
+            <tbody *ngFor="let cliente of formulario?.dadosClientes; index as index; first as isFirst">
                 <tr>
                     <th style="text-align: center;" colspan="3">{{isFirst ? 'CLIENTE' :
                         formulario.dadosClientes[0].dados.estadocivil === 'Solteiro' ? 'CLIENTE 2' : 'CÔNJUGE'}}</th>
@@ -81,7 +81,7 @@
                 <th style="text-align: center;" colspan="3">ESPECIFICAÇÃO DA PROPOSTA</th>
             </tr>
             <tr>
-                <td colspan="3">VALOR IMÓVEL: {{formulario.valorImovel | number:'1.2-2':'pt-BR' }}</td>
+                <td colspan="3">VALOR IMÓVEL: {{formulario?.valorImovel | number:'1.2-2':'pt-BR' }}</td>
             </tr>
             <tr>
                 <td colspan="3">
@@ -89,7 +89,7 @@
                         <tbody>
                             <td style="border-left: none; border-right: none; border-bottom: none; border-top: none;">FORMA DE PAGAMENTO:</td>
                             <td
-                                style="white-space: pre-wrap; border-left: none; border-right: none; border-bottom: none; border-top: none;">{{formulario.formaPagamento}}</td>
+                                style="white-space: pre-wrap; border-left: none; border-right: none; border-bottom: none; border-top: none;">{{formulario?.formaPagamento}}</td>
                         </tbody>
                     </table>
                 </td>

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { TemplateComponent } from './template.component';
+import { DatePipe } from '@angular/common';
 
 describe('TemplateComponent', () => {
   let component: TemplateComponent;
@@ -8,7 +8,8 @@ describe('TemplateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TemplateComponent ]
+      declarations: [ TemplateComponent ],
+      providers: [DatePipe]
     })
     .compileComponents();
   });
