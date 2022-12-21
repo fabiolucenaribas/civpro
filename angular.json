@@ -47,13 +47,14 @@
               "node_modules/primeflex/primeflex.css"
             ],
             "scripts": [],
-            "aot": true,
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": true,
-            "sourceMap": false,
             "optimization": true,
-            "namedChunks": true
+            "outputHashing": "all",
+            "sourceMap": false,
+            "namedChunks": false,
+            "aot": true,
+            "extractLicenses": true,
+            "vendorChunk": false,
+            "buildOptimizer": true
           },
           "configurations": {
             "production": {
