@@ -12,6 +12,7 @@
     "start:electron": "npm run build:electron && electron .",
     "electron:build": "npm run build:prod && electron-builder build --publish=never",
     "electron:serve-tsc": "tsc -p tsconfig.serve.json",
+    "build:ci": "ng build --base-href /civpro/",
     "build:prod": "npm run build:electron -- -c production",
     "build:electron": "npm run electron:serve-tsc && ng build --base-href ./",
     "build": "ng build",
