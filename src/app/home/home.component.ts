@@ -12,8 +12,12 @@ import {
   ConfirmationService,
   MenuItem,
   MessageService,
+  PrimeIcons,
   PrimeNGConfig
 } from 'primeng/api';
+
+import { saveAs } from "file-saver";
+import JSZip from "jszip";
 
 @Component({
   selector: 'app-home',
@@ -100,6 +104,7 @@ export class HomeComponent implements OnInit {
   }
 
   async baixarFormulario() {
+
     const dateFormated = this.datepipe.transform(new Date(), 'dd_MM_yyyy HH_mm_ss');
     const filename = dateFormated + '.json';
     const json = JSON.stringify(this.formulario);
@@ -109,6 +114,30 @@ export class HomeComponent implements OnInit {
       this.platform, async () => {
         await Utils.notificacao('Formulario baixado com sucesso.', this.platform, this.toastController);
       });
+  }
+
+  gerarArquivoZipado() {
+    const zip = new JSZip();
+
+    const dateFormated = this.datepipe.transform(new Date(), 'dd_MM_yyyy HH_mm_ss');
+    const filenameJson = dateFormated + '.json';
+
+    const json = JSON.stringify(this.formulario);
+    const base64Json = Utils.b64EncodeUnicode(json);
+    zip.file(filenameJson, base64Json, { base64: true });
+
+    const filenamePDF = dateFormated + '.pdf';
+
+    this.templateComponent.gerarPdfBase64().then(
+      result => {
+        zip.file(filenamePDF, result, { base64: true });
+
+        zip.generateAsync({ type: "blob" })
+          .then(function (content) {
+            saveAs(content, dateFormated + '.zip');
+          });
+      }
+    );
   }
 
   exportar() {
@@ -167,24 +196,24 @@ export class HomeComponent implements OnInit {
       {
         id: 'novo',
         label: 'Novo',
-        icon: 'pi pi-fw pi-plus',
+        icon: PrimeIcons.PLUS,
         command: (event: Event) => { this.confirmaNovoFormulario(); }
       },
       {
         id: 'carregar',
         label: 'Carregar',
-        icon: 'pi pi-fw pi-upload',
+        icon: PrimeIcons.UPLOAD,
       },
       {
         id: 'salvar',
         label: 'Salvar',
-        icon: 'pi pi-fw pi-save',
+        icon: PrimeIcons.SAVE,
         command: (event: Event) => { this.baixarFormulario(); }
       },
       {
         id: 'exportar',
         label: 'Exportar',
-        icon: 'pi pi-fw pi-file-pdf',
+        icon: PrimeIcons.FILE_PDF,
         target: 'file',
         command: (event: Event) => { this.exportar(); }
       }
@@ -223,7 +252,8 @@ export class HomeComponent implements OnInit {
         handler: () => {
           this.baixarFormulario();
         }
-      }, {
+      }, 
+      {
         text: 'Exportar',
         icon: this.isPlataformMobileAndroid() ? 'document-text-outline' : '',
         handler: () => {

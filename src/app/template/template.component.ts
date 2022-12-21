@@ -29,6 +29,33 @@ export class TemplateComponent {
   ) { }
 
   gerarPdf() {
+    const pdfDocGenerator = this.createPDF();
+
+    if (this.platform.is('ios') || this.platform.is('android')) {
+      pdfDocGenerator.getBase64((data: any) => {
+        const dateFormated = this.datepipe.transform(new Date(), 'dd_MM_yyyy HH_mm_ss');
+        const filename = dateFormated + '.pdf';
+
+        this.router.navigateByUrl('viewer', {
+          state: { data: { name: filename, base64: data } }
+        });
+      });
+    } else {
+      pdfDocGenerator.open();
+    }
+  }
+
+  gerarPdfBase64(): Promise<any> {
+    const pdfDocGenerator = this.createPDF();
+
+    return new Promise(function (resolve) {
+      pdfDocGenerator.getBase64((data: any) => {
+        resolve(data)
+      });
+    });
+  }
+
+  createPDF(): any {
     const innerHTML = this.pdfTemplate.nativeElement.innerHTML;
 
     const options = {
@@ -38,7 +65,7 @@ export class TemplateComponent {
     };
 
     const html = htmlToPdfmake(innerHTML, options);
-    html[0].table.widths='*';
+    html[0].table.widths = '*';
 
     console.log(html);
     const documentDefinition = {
@@ -56,19 +83,6 @@ export class TemplateComponent {
       pageNumbers: [1]
     };
 
-    const pdfDocGenerator = pdfMake.createPdf(documentDefinition);
-
-    if (this.platform.is('ios') || this.platform.is('android')) {
-      pdfDocGenerator.getBase64((data) => {
-        const dateFormated = this.datepipe.transform(new Date(), 'dd_MM_yyyy HH_mm_ss');
-        const filename = dateFormated + '.pdf';
-
-        this.router.navigateByUrl('viewer', {
-          state: { data: { name: filename, base64: data } }
-        });
-      });
-    } else {
-      pdfDocGenerator.open();
-    }
+    return pdfMake.createPdf(documentDefinition);
   }
 }
