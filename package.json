@@ -1,6 +1,6 @@
 {
   "name": "civpro",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": "Fábio Lucena Ribas",
   "homepage": "https://github.com/FabioLucenaRibas/civpro",
   "main": "app/main.js",
@@ -47,8 +47,8 @@
     "ngx-mask": "^14.0.3",
     "pdfmake": "^0.2.5",
     "primeflex": "^3.2.1",
-    "primeicons": "^5.0.0",
-    "primeng": "^14.0.2",
+    "primeicons": "^6.0.1",
+    "primeng": "^14.2.2",
     "rxjs": "~7.5.6",
     "tslib": "^2.4.0",
     "zone.js": "~0.11.8"
