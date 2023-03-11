@@ -18,6 +18,7 @@ import {
 
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
+import { Opcoes } from '../model/opcoes.model';
 
 @Component({
   selector: 'app-home',
@@ -71,6 +72,18 @@ export class HomeComponent implements OnInit {
     const formulario = localStorage.getItem(HomeComponent.formularioKey);
     if (formulario != null) {
       this.formulario = JSON.parse(formulario);
+
+      for (const cliente of this.formulario.dadosClientes) {
+        if (cliente.dados.dataNascimento){
+          cliente.dados.dataNascimento = new Date(cliente.dados.dataNascimento);
+        }
+      }
+
+      if (!this.formulario.opcoes) {
+        this.formulario.opcoes = new Opcoes();
+        this.formulario.opcoes.corretor = false;
+        this.formulario.opcoes.gerente = false;
+      }
     }
   }
 
@@ -96,8 +109,17 @@ export class HomeComponent implements OnInit {
       const result = fileReader.result.toString();
       localStorage.setItem(HomeComponent.formularioKey, result);
       this.formulario = JSON.parse(result);
+
       for (const cliente of this.formulario.dadosClientes) {
-        cliente.dados.dataNascimento = new Date(cliente.dados.dataNascimento);
+        if (cliente.dados.dataNascimento){
+          cliente.dados.dataNascimento = new Date(cliente.dados.dataNascimento);
+        }
+      }
+
+      if (!this.formulario.opcoes) {
+        this.formulario.opcoes = new Opcoes();
+        this.formulario.opcoes.corretor = false;
+        this.formulario.opcoes.gerente = false;
       }
     };
     fileReader.readAsText(files.item(0));
@@ -141,11 +163,11 @@ export class HomeComponent implements OnInit {
   }
 
   exportar() {
-    if (!this.formFormulario.form.valid) {
-      this.confirmarExporta();
-    } else {
+    // if (!this.formFormulario.form.valid) {
+      // this.confirmarExporta();
+    // } else {
       this.gerarPdf();
-    }
+    // }
   }
 
   gerarPdf() {

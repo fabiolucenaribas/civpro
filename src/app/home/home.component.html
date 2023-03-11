@@ -169,7 +169,7 @@
                                                                 [(ngModel)]="cliente.dados.dataNascimento"
                                                                 ngDefaultControl name="dados.dataNascimento{{index}}"
                                                                 class="form-control" dateFormat="dd/mm/yy"
-                                                                styleClass="calendar">
+                                                                styleClass="calendar" [touchUI]="true">
                                                             </p-calendar>
                                                             <label for="inputgroup">Nascimento</label>
                                                         </span>
@@ -397,7 +397,7 @@
                             <h5>Opções</h5>
                             <div class="col">
                                 <div class="p-field-checkbox">
-                                    <p-checkbox label="Corretor" [binary]="true" style="margin-right: 2%;"
+                                    <p-checkbox label="Corretor" [binary]="true"
                                         [(ngModel)]="formulario.opcoes.corretor" ngDefaultControl name="corretor"
                                         #corretor="ngModel"></p-checkbox>
                                     <p-checkbox label="Gerente" [binary]="true" [(ngModel)]="formulario.opcoes.gerente"
