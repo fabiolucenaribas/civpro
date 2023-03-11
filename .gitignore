@@ -32,6 +32,7 @@ npm-debug.log*
 /www
 /release
 main.js
+electron-tabs.js
 *.js.map
 .angular
 node_modules

@@ -5,7 +5,7 @@
                 <td style="text-align: center;">
                     <img width="100" [src]="domSanitizer.bypassSecurityTrustUrl(formulario?.imagem)">
                 </td>
-                <td style="margin-top: 40px; text-align: center;" colspan="2">
+                <td style="margin-top: 40px; margin-bottom: 40px; text-align: center;" colspan="2">
                     {{formulario?.titulo}}</td>
             </tr>
             <tr>
@@ -50,7 +50,7 @@
                 <tr>
                     <th style="text-align: center;" colspan="3">DADOS EMPRESA</th>
                 </tr>
-                <tr >
+                <tr>
                     <td colspan="3">RAZÃO SOCIAL: {{cliente.dadosEmpresa.razaoSocial}}</td>
                 </tr>
                 <tr>
@@ -77,7 +77,7 @@
                     <td>TELEFONE: {{cliente.referenciaPessoal[1].telefone}}</td>
                 </tr>
             </tbody>
-            <tr >
+            <tr>
                 <th style="text-align: center;" colspan="3">ESPECIFICAÇÃO DA PROPOSTA</th>
             </tr>
             <tr>
@@ -87,9 +87,11 @@
                 <td colspan="3">
                     <table>
                         <tbody>
-                            <td style="border-left: none; border-right: none; border-bottom: none; border-top: none;">FORMA DE PAGAMENTO:</td>
+                            <td style="border-left: none; border-right: none; border-bottom: none; border-top: none;">
+                                FORMA DE PAGAMENTO:</td>
                             <td
-                                style="white-space: pre-wrap; border-left: none; border-right: none; border-bottom: none; border-top: none;">{{formulario?.formaPagamento}}</td>
+                                style="white-space: pre-wrap; border-left: none; border-right: none; border-bottom: none; border-top: none;">
+                                {{formulario?.formaPagamento}}</td>
                         </tbody>
                     </table>
                 </td>
@@ -111,13 +113,42 @@
                     style="margin-top: 25px; text-align: center; border-left: none; border-bottom: none; border-top: none;">
                     __________________________ </td>
             </tr>
-            <tr>
-                <td colspan="1" style="text-align: center; border-right: none; border-top: none">ASS.
-                    COMPRADOR </td>
-                <td colspan="1"
-                    style="text-align: center; border-left: none; border-right: none; border-top: none">
-                    ASS. COMPRADOR 2 </td>
-                <td colspan="1" style="text-align: center; border-left: none; border-top: none">CONSTRUTORA</td>
+            <tr *ngIf="formulario?.opcoes?.corretor || formulario?.opcoes?.gerente">
+                <td colspan="1" style="text-align: center; border-right: none; border-top: none; border-bottom: none;">PROPONENTE </td>
+                <td colspan="1" style="text-align: center; border-left: none; border-right: none; border-top: none; border-bottom: none;">
+                    PROPONENTE </td>
+                <td colspan="1" style="text-align: center; border-left: none; border-top: none; border-bottom: none;">CONSTRUTORA</td>
+            </tr>
+            <tr *ngIf="!formulario?.opcoes?.corretor && !formulario?.opcoes?.gerente">
+                <td colspan="1" style="text-align: center; border-right: none; border-top: none;">PROPONENTE </td>
+                <td colspan="1" style="text-align: center; border-left: none; border-right: none; border-top: none;">
+                    PROPONENTE </td>
+                <td colspan="1" style="text-align: center; border-left: none; border-top: none;">CONSTRUTORA</td>
+            </tr>
+            <tr *ngIf="formulario?.opcoes?.corretor || formulario?.opcoes?.gerente">
+                <td colspan="3" style="border-top: none;">
+                    <table width=100%>
+                        <tbody>
+                            <tr>
+                                <td *ngIf="formulario?.opcoes?.corretor" colspan="2"
+                                    style="margin-top: 25px; text-align: center; border-left: none; border-right: none; border-bottom: none; border-top: none;">
+                                    __________________________ </td>
+                                <td *ngIf="formulario?.opcoes?.gerente" colspan="2"
+                                    style="margin-top: 25px; text-align: center; border-left: none; border-right: none; border-bottom: none; border-top: none;">
+                                    __________________________ </td>
+                            </tr>
+                            <tr>
+                                <td *ngIf="formulario?.opcoes?.corretor" colspan="2"
+                                    style="text-align: center; border-left: none; border-right: none; border-bottom: none; border-top: none;">
+                                    CORRETOR </td>
+                                <td *ngIf="formulario?.opcoes?.gerente" colspan="2"
+                                    style="text-align: center; border-left: none; border-right: none; border-bottom: none; border-top: none;">
+                                    GERENTE
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
             </tr>
         </table>
     </div>

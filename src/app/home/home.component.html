@@ -26,7 +26,8 @@
 
                         <div class="card">
                             <div class="flex align-content-center flex-wrap card-container grid">
-                                <div class="col-fixed flex align-items-center justify-content-center" style="width:158px">
+                                <div class="col-fixed flex align-items-center justify-content-center"
+                                    style="width:158px">
                                     <img width="150" [src]='domSanitizer.bypassSecurityTrustUrl(formulario.imagem)'>
                                 </div>
                                 <div class="col">
@@ -392,6 +393,19 @@
                             </div>
                         </div>
 
+                        <div class="card">
+                            <h5>Opções</h5>
+                            <div class="col">
+                                <div class="p-field-checkbox">
+                                    <p-checkbox label="Corretor" [binary]="true" style="margin-right: 2%;"
+                                        [(ngModel)]="formulario.opcoes.corretor" ngDefaultControl name="corretor"
+                                        #corretor="ngModel"></p-checkbox>
+                                    <p-checkbox label="Gerente" [binary]="true" [(ngModel)]="formulario.opcoes.gerente"
+                                        ngDefaultControl name="gerente" #gerente="ngModel"></p-checkbox>
+                                </div>
+
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

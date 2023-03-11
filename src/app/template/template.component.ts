@@ -59,6 +59,7 @@ export class TemplateComponent {
     const innerHTML = this.pdfTemplate.nativeElement.innerHTML;
 
     const options = {
+      tableAutoSize: true,
       defaultStyles: {
         table: { margin: [-5, 0, 0, 0] }
       }
