@@ -16,8 +16,8 @@ import {
   PrimeNGConfig
 } from 'primeng/api';
 
-import { saveAs } from "file-saver";
-import JSZip from "jszip";
+import { saveAs } from 'file-saver';
+import JSZip from 'jszip';
 
 @Component({
   selector: 'app-home',
@@ -132,8 +132,8 @@ export class HomeComponent implements OnInit {
       result => {
         zip.file(filenamePDF, result, { base64: true });
 
-        zip.generateAsync({ type: "blob" })
-          .then(function (content) {
+        zip.generateAsync({ type: 'blob' })
+          .then(function(content) {
             saveAs(content, dateFormated + '.zip');
           });
       }
@@ -252,7 +252,7 @@ export class HomeComponent implements OnInit {
         handler: () => {
           this.baixarFormulario();
         }
-      }, 
+      },
       {
         text: 'Exportar',
         icon: this.isPlataformMobileAndroid() ? 'document-text-outline' : '',

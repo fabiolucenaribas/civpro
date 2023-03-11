@@ -48,9 +48,9 @@ export class TemplateComponent {
   gerarPdfBase64(): Promise<any> {
     const pdfDocGenerator = this.createPDF();
 
-    return new Promise(function (resolve) {
+    return new Promise(function(resolve) {
       pdfDocGenerator.getBase64((data: any) => {
-        resolve(data)
+        resolve(data);
       });
     });
   }

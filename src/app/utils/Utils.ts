@@ -81,7 +81,6 @@ export class Utils {
         console.error('Erro ao salvar arquivo: ' + filename, e);
       }
     } else {
-      
       const a = document.createElement('a');
       const dataURI = 'data:' + filetype + ';base64,' + base64;
       a.href = dataURI;

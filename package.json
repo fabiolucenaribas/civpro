@@ -16,7 +16,8 @@
     "build:prod": "npm run build:electron -- -c production",
     "build:electron": "npm run electron:serve-tsc && ng build --base-href ./",
     "build": "ng build",
-    "test": "ng test",
+    "test": "ng test --watch=false",
+    "test:watch": "ng test",
     "lint": "ng lint",
     "e2e": "npm run build:prod && playwright test -c e2e/playwright.config.ts e2e/"
   },
@@ -66,6 +67,7 @@
     "@capacitor/cli": "4.2.0",
     "@ionic/angular-toolkit": "^7.0.0",
     "@playwright/test": "^1.25.2",
+    "@types/file-saver": "^2.0.5",
     "@types/jasmine": "~4.3.0",
     "@types/jasminewd2": "~2.0.10",
     "@types/node": "^18.7.16",
