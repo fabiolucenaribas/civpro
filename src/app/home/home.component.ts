@@ -81,6 +81,7 @@ export class HomeComponent implements OnInit {
 
       if (!this.formulario.opcoes) {
         this.formulario.opcoes = new Opcoes();
+        this.formulario.opcoes.clienteConjuge = false;
         this.formulario.opcoes.corretor = false;
         this.formulario.opcoes.gerente = false;
       }
@@ -118,6 +119,7 @@ export class HomeComponent implements OnInit {
 
       if (!this.formulario.opcoes) {
         this.formulario.opcoes = new Opcoes();
+        this.formulario.opcoes.clienteConjuge = false;
         this.formulario.opcoes.corretor = false;
         this.formulario.opcoes.gerente = false;
       }

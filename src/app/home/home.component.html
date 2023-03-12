@@ -397,6 +397,9 @@
                             <h5>Opções</h5>
                             <div class="col">
                                 <div class="p-field-checkbox">
+                                    <p-checkbox label="Cliente 2 / Conjuge" [binary]="true"
+                                    [(ngModel)]="formulario.opcoes.clienteConjuge" ngDefaultControl name="clienteConjuge"
+                                    #clienteConjuge="ngModel"></p-checkbox>
                                     <p-checkbox label="Corretor" [binary]="true"
                                         [(ngModel)]="formulario.opcoes.corretor" ngDefaultControl name="corretor"
                                         #corretor="ngModel"></p-checkbox>
