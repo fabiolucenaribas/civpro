@@ -61,7 +61,9 @@ export class TemplateComponent {
     const options = {
       tableAutoSize: true,
       defaultStyles: {
-        table: { margin: [-5, 0, 0, 0] }
+        table: {
+          margin: [-5, -3, 0, -3]
+        }
       }
     };
 

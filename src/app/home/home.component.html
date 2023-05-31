@@ -136,6 +136,54 @@
                                             </div>
 
                                             <div class="p-fluid formgrid grid">
+                                                <div class="field col-12 md:col-3 lg:col-3">
+                                                    <span class="p-float-label">
+                                                        <input id="float-input" ngDefaultControl
+                                                            name="dados.cep{{index}}" [(ngModel)]="cliente.dados.cep"
+                                                            #cep="ngModel" class="form-control" pInputText
+                                                            [dropSpecialCharacters]="false" mask="00000-000"
+                                                            required />
+                                                        <label for="float-input"><span class="error font-bold">*
+                                                            </span>CEP</label>
+                                                    </span>
+                                                </div>
+
+                                                <div class="field col-12 md:col-3 lg:col-3">
+                                                    <span class="p-float-label">
+                                                        <input id="float-input" type="text"
+                                                            [(ngModel)]="cliente.dados.bairro" #bairro="ngModel"
+                                                            ngDefaultControl name="dados.bairro{{index}}"
+                                                            class="form-control" pInputText required>
+                                                        <label for="float-input"><span class="error font-bold">*
+                                                            </span>Bairro</label>
+                                                    </span>
+                                                </div>
+
+                                                <div class="field col-12 md:col-3 lg:col-3">
+                                                    <span class="p-float-label">
+                                                        <input id="float-input" type="text"
+                                                            [(ngModel)]="cliente.dados.cidade" #cidade="ngModel"
+                                                            ngDefaultControl name="dados.cidade{{index}}"
+                                                            class="form-control" pInputText required>
+                                                        <label for="float-input"><span class="error font-bold">*
+                                                            </span>Cidade</label>
+                                                    </span>
+                                                </div>
+
+                                                <div class="field col-12 md:col-3 lg:col-3">
+                                                    <span class="p-float-label">
+                                                        <p-dropdown [options]="estados"
+                                                            [(ngModel)]="cliente.dados.estado" [showClear]="true"
+                                                            [filter]="true" #estado="ngModel" placeholder="Estado"
+                                                            name="dados.estado{{index}}" inputId="float-label"
+                                                            required></p-dropdown>
+                                                        <label for="float-label"><span class="error font-bold">*
+                                                            </span>Estado</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="p-fluid formgrid grid">
                                                 <div class="field col-12 md:col-4 lg:col-4">
                                                     <span class="p-float-label">
                                                         <input id="float-input" ngDefaultControl
@@ -247,6 +295,50 @@
                                                             name="dadosEmpresa.endereco{{index}}" class="form-control"
                                                             pInputText>
                                                         <label for="float-input">Endereço</label>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="p-fluid formgrid grid">
+                                                <div class="field col-12 md:col-3 lg:col-3">
+                                                    <span class="p-float-label">
+                                                        <input id="float-input" ngDefaultControl
+                                                            name="dadosEmpresa.cep{{index}}"
+                                                            [(ngModel)]="cliente.dadosEmpresa.cep" class="form-control"
+                                                            pInputText [dropSpecialCharacters]="false"
+                                                            mask="00000-000" />
+                                                        <label for="float-input">CEP</label>
+                                                    </span>
+                                                </div>
+
+                                                <div class="field col-12 md:col-3 lg:col-3">
+                                                    <span class="p-float-label">
+                                                        <input id="float-input" type="text"
+                                                            [(ngModel)]="cliente.dadosEmpresa.bairro" ngDefaultControl
+                                                            name="dadosEmpresa.bairro{{index}}" class="form-control"
+                                                            pInputText>
+                                                        <label for="float-input">Bairro</label>
+                                                    </span>
+                                                </div>
+
+                                                <div class="field col-12 md:col-3 lg:col-3">
+                                                    <span class="p-float-label">
+                                                        <input id="float-input" type="text"
+                                                            [(ngModel)]="cliente.dadosEmpresa.cidade"
+                                                            ngDefaultControl name="dadosEmpresa.cidade{{index}}"
+                                                            class="form-control" pInputText required>
+                                                        <label for="float-input">Cidade</label>
+                                                    </span>
+                                                </div>
+
+                                                <div class="field col-12 md:col-3 lg:col-3">
+                                                    <span class="p-float-label">
+                                                        <p-dropdown [options]="estados"
+                                                            [(ngModel)]="cliente.dadosEmpresa.estado" [showClear]="true"
+                                                            [filter]="true" placeholder="Estado"
+                                                            name="dadosEmpresa.estado{{index}}"
+                                                            inputId="float-label"></p-dropdown>
+                                                        <label for="float-label">Estado</label>
                                                     </span>
                                                 </div>
                                             </div>
@@ -398,8 +490,8 @@
                             <div class="col">
                                 <div class="p-field-checkbox">
                                     <p-checkbox label="Cliente 2 / Conjuge" [binary]="true"
-                                    [(ngModel)]="formulario.opcoes.clienteConjuge" ngDefaultControl name="clienteConjuge"
-                                    #clienteConjuge="ngModel"></p-checkbox>
+                                        [(ngModel)]="formulario.opcoes.clienteConjuge" ngDefaultControl
+                                        name="clienteConjuge" #clienteConjuge="ngModel"></p-checkbox>
                                     <p-checkbox label="Corretor" [binary]="true"
                                         [(ngModel)]="formulario.opcoes.corretor" ngDefaultControl name="corretor"
                                         #corretor="ngModel"></p-checkbox>

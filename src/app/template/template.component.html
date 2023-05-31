@@ -28,11 +28,31 @@
                     <td colspan="3">ENDERECO: {{cliente.dados.endereco}}</td>
                 </tr>
                 <tr *ngIf="isFirst || formulario?.opcoes?.clienteConjuge">
+                    <td colspan="3" style="border-top: none;">
+                        <table width=100%>
+                            <tbody>
+                                <tr>
+                                    <td colspan="1" style="border-left: none; border-bottom: none; border-top: none;">
+                                        CEP: {{cliente.dados.cep}}</td>
+                                    <td colspan="1" style="border-left: none; border-bottom: none; border-top: none;">
+                                        BAIRRO: {{cliente.dados.bairro}}</td>
+                                    <td colspan="1" style="border-left: none; border-bottom: none; border-top: none;">
+                                        CIDADE: {{cliente.dados.cidade}}</td>
+                                    <td colspan="1"
+                                        style="border-left: none; border-right: none; border-bottom: none; border-top: none;">
+                                        ESTADO: {{cliente.dados.estado}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr *ngIf="isFirst || formulario?.opcoes?.clienteConjuge">
                     <td colspan="1">CPF: {{cliente.dados.cpf}}</td>
                     <td colspan="1">RG: {{cliente.dados.rg}}</td>
                     <td colspan="1">NASCIMENTO: {{cliente.dados.dataNascimento | date: 'dd/MM/yyyy'}}</td>
                 </tr>
-                <tr *ngIf="isFirst && cliente.dados.estadocivil !=='Solteiro' || !isFirst && formulario?.opcoes?.clienteConjuge">
+                <tr
+                    *ngIf="isFirst && cliente.dados.estadocivil !=='Solteiro' || !isFirst && formulario?.opcoes?.clienteConjuge">
                     <td colspan="3">FORMAÇÃO: {{cliente.dados.formacao}}</td>
                 </tr>
                 <tr *ngIf="isFirst && cliente.dados.estadocivil==='Solteiro'">
@@ -55,6 +75,25 @@
                 </tr>
                 <tr *ngIf="isFirst || formulario?.opcoes?.clienteConjuge">
                     <td colspan="3">ENDEREÇO: {{cliente.dadosEmpresa.endereco}}</td>
+                </tr>
+                <tr *ngIf="isFirst || formulario?.opcoes?.clienteConjuge">
+                    <td colspan="3" style="border-top: none;">
+                        <table width=100%>
+                            <tbody>
+                                <tr>
+                                    <td colspan="1" style="border-left: none; border-bottom: none; border-top: none;">
+                                        CEP: {{cliente.dadosEmpresa.cep}}</td>
+                                    <td colspan="1" style="border-left: none; border-bottom: none; border-top: none;">
+                                        BAIRRO: {{cliente.dadosEmpresa.bairro}}</td>
+                                    <td colspan="1" style="border-left: none; border-bottom: none; border-top: none;">
+                                        CIDADE: {{cliente.dadosEmpresa.cidade}}</td>
+                                    <td colspan="1"
+                                        style="border-left: none; border-right: none; border-bottom: none; border-top: none;">
+                                        ESTADO: {{cliente.dadosEmpresa.estado}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
                 </tr>
                 <tr *ngIf="isFirst || formulario?.opcoes?.clienteConjuge">
                     <td colspan="2">FUNÇÃO: {{cliente.dadosEmpresa.funcao}}</td>
@@ -110,20 +149,24 @@
                     style="margin-top: 25px; text-align: center; border-left: none; border-right: none; border-bottom: none; border-top: none;">
                     __________________________ </td>
                 <td *ngIf="!formulario?.opcoes?.clienteConjuge" colspan="1"
-                    style="margin-top: 25px; text-align: center; border-left: none; border-right: none; border-bottom: none; border-top: none;"></td>
+                    style="margin-top: 25px; text-align: center; border-left: none; border-right: none; border-bottom: none; border-top: none;">
+                </td>
                 <td colspan="1"
                     style="margin-top: 25px; text-align: center; border-left: none; border-bottom: none; border-top: none;">
                     __________________________ </td>
             </tr>
             <tr *ngIf="formulario?.opcoes?.corretor || formulario?.opcoes?.gerente">
-                <td colspan="1" style="text-align: center; border-right: none; border-top: none; border-bottom: none;">PROPONENTE </td>
-                
+                <td colspan="1" style="text-align: center; border-right: none; border-top: none; border-bottom: none;">
+                    PROPONENTE </td>
+
                 <td *ngIf="formulario?.opcoes?.clienteConjuge" colspan="1"
                     style="text-align: center; border-left: none; border-right: none; border-top: none; border-bottom: none;">
                     PROPONENTE </td>
                 <td *ngIf="!formulario?.opcoes?.clienteConjuge" colspan="1"
-                    style="text-align: center; border-left: none; border-right: none; border-top: none; border-bottom: none;"></td>
-                <td colspan="1" style="text-align: center; border-left: none; border-top: none; border-bottom: none;">CONSTRUTORA</td>
+                    style="text-align: center; border-left: none; border-right: none; border-top: none; border-bottom: none;">
+                </td>
+                <td colspan="1" style="text-align: center; border-left: none; border-top: none; border-bottom: none;">
+                    CONSTRUTORA</td>
             </tr>
             <tr *ngIf="!formulario?.opcoes?.corretor && !formulario?.opcoes?.gerente">
                 <td colspan="1" style="text-align: center; border-right: none; border-top: none;">PROPONENTE </td>

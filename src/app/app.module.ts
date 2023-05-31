@@ -12,6 +12,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 
 import { NgxMaskModule, IConfig } from 'ngx-mask';
@@ -67,6 +68,7 @@ registerLocaleData(localePt);
         InputTextareaModule,
         ButtonModule,
         SelectButtonModule,
+        DropdownModule,
         CalendarModule,
         TableModule,
         TabViewModule,
