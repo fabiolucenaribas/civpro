@@ -172,7 +172,7 @@
 
                                                 <div class="field col-12 md:col-3 lg:col-3">
                                                     <span class="p-float-label">
-                                                        <p-dropdown [options]="estados"
+                                                        <p-dropdown [options]="estados" ngDefaultControl
                                                             [(ngModel)]="cliente.dados.estado" [showClear]="true"
                                                             [filter]="true" #estado="ngModel" placeholder="Estado"
                                                             name="dados.estado{{index}}" inputId="float-label"
@@ -333,7 +333,7 @@
 
                                                 <div class="field col-12 md:col-3 lg:col-3">
                                                     <span class="p-float-label">
-                                                        <p-dropdown [options]="estados"
+                                                        <p-dropdown [options]="estados" ngDefaultControl
                                                             [(ngModel)]="cliente.dadosEmpresa.estado" [showClear]="true"
                                                             [filter]="true" placeholder="Estado"
                                                             name="dadosEmpresa.estado{{index}}"
