@@ -1,6 +1,6 @@
 {
   "name": "civpro",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "author": "Fábio Lucena Ribas",
   "homepage": "https://github.com/FabioLucenaRibas/civpro",
   "main": "app/main.js",
