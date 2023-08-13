@@ -4,8 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { ViewerPdfComponent } from './viewer-pdf/viewer-pdf.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  { path: '', component: HomeComponent },
   { path: 'viewer', component: ViewerPdfComponent }
 ];
 
