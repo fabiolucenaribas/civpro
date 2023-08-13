@@ -11,6 +11,7 @@ import { Utils } from '../utils/Utils';
 import {
   ConfirmationService,
   MenuItem,
+  MenuItemCommandEvent,
   MessageService,
   PrimeIcons,
   PrimeNGConfig
@@ -253,7 +254,7 @@ export class HomeComponent implements OnInit {
         id: 'novo',
         label: 'Novo',
         icon: PrimeIcons.PLUS,
-        command: (event: Event) => { this.confirmaNovoFormulario(); }
+        command: (event: MenuItemCommandEvent) => { this.confirmaNovoFormulario(); }
       },
       {
         id: 'carregar',
@@ -264,14 +265,14 @@ export class HomeComponent implements OnInit {
         id: 'salvar',
         label: 'Salvar',
         icon: PrimeIcons.SAVE,
-        command: (event: Event) => { this.baixarFormulario(); }
+        command: (event: MenuItemCommandEvent) => { this.baixarFormulario(); }
       },
       {
         id: 'exportar',
         label: 'Exportar',
         icon: PrimeIcons.FILE_PDF,
         target: 'file',
-        command: (event: Event) => { this.exportar(); }
+        command: (event: MenuItemCommandEvent) => { this.exportar(); }
       }
     ];
   }
