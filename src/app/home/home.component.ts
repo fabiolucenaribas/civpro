@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit {
     this.primengConfig.ripple = true;
     this.carregarItemsMenu();
     this.recuperarEstadoFormulario();
-    setTimeout(()=> this.showProgressSpinner = false, 500)
+    setTimeout(() => this.showProgressSpinner = false, 500)
   }
 
   recuperarEstadoFormulario() {
@@ -110,7 +110,7 @@ export class HomeComponent implements OnInit {
       this.formulario = JSON.parse(formulario);
 
       for (const cliente of this.formulario.dadosClientes) {
-        if (cliente.dados.dataNascimento){
+        if (cliente.dados.dataNascimento) {
           cliente.dados.dataNascimento = new Date(cliente.dados.dataNascimento);
         }
       }
@@ -148,7 +148,7 @@ export class HomeComponent implements OnInit {
       this.formulario = JSON.parse(result);
 
       for (const cliente of this.formulario.dadosClientes) {
-        if (cliente.dados.dataNascimento){
+        if (cliente.dados.dataNascimento) {
           cliente.dados.dataNascimento = new Date(cliente.dados.dataNascimento);
         }
       }
@@ -193,7 +193,7 @@ export class HomeComponent implements OnInit {
         zip.file(filenamePDF, result, { base64: true });
 
         zip.generateAsync({ type: 'blob' })
-          .then(function(content) {
+          .then(function (content) {
             saveAs(content, dateFormated + '.zip');
           });
       }
@@ -202,9 +202,9 @@ export class HomeComponent implements OnInit {
 
   exportar() {
     // if (!this.formFormulario.form.valid) {
-      // this.confirmarExporta();
+    // this.confirmarExporta();
     // } else {
-      this.gerarPdf();
+    this.gerarPdf();
     // }
   }
 
@@ -254,6 +254,25 @@ export class HomeComponent implements OnInit {
   carregarItemsMenu() {
     this.items = [
       {
+        id: 'formulario',
+        label: 'Formularios',
+        icon: PrimeIcons.LIST,
+        items: [
+          {
+            id: 'compra',
+            label: 'Compra',
+            icon: PrimeIcons.ALIGN_LEFT,
+            command: (event: MenuItemCommandEvent) => { this.router.navigateByUrl('/'); }
+          },
+          {
+            id: 'captacao',
+            label: 'Captação',
+            icon: PrimeIcons.ALIGN_LEFT,
+            command: (event: MenuItemCommandEvent) => { this.router.navigateByUrl('captacao'); }
+          }
+        ]
+      },
+      {
         id: 'novo',
         label: 'Novo',
         icon: PrimeIcons.PLUS,
@@ -275,7 +294,7 @@ export class HomeComponent implements OnInit {
         label: 'Exportar',
         icon: PrimeIcons.FILE_PDF,
         target: 'file',
-        command: (event: MenuItemCommandEvent) => { this.exportar(); }
+        command: (event: MenuItemCommandEvent) => {  this.exportar(); }
       }
     ];
   }
