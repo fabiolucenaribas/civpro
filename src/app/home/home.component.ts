@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit {
     this.primengConfig.ripple = true;
     this.carregarItemsMenu();
     this.recuperarEstadoFormulario();
-    setTimeout(() => this.showProgressSpinner = false, 500)
+    setTimeout(() => this.showProgressSpinner = false, 500);
   }
 
   recuperarEstadoFormulario() {
@@ -193,7 +193,7 @@ export class HomeComponent implements OnInit {
         zip.file(filenamePDF, result, { base64: true });
 
         zip.generateAsync({ type: 'blob' })
-          .then(function (content) {
+          .then(function(content) {
             saveAs(content, dateFormated + '.zip');
           });
       }

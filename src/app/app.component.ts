@@ -79,6 +79,6 @@ export class AppComponent implements OnInit {
 
   private updateTheme() {
     const theme = this.themeService.getTheme();
-    this.themeService.switchTheme(theme)
+    this.themeService.switchTheme(theme);
   }
 }
