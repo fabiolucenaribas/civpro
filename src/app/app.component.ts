@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
+import { ThemeService } from './service/ThemeService';
 
 @Component({
   selector: 'app-root',
@@ -8,9 +9,14 @@ import { PrimeNGConfig } from 'primeng/api';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private config: PrimeNGConfig) { }
+  constructor(
+    private config: PrimeNGConfig,
+    private themeService: ThemeService
+  ) { }
 
   ngOnInit() {
+    this.updateTheme();
+    this.subscribeToPrefersColorScheme();
     this.config.setTranslation(
       {
         startsWith: 'Começa com',
@@ -60,5 +66,19 @@ export class AppComponent implements OnInit {
         emptyMessage: 'Nenhum resultado encontrado',
         emptyFilterMessage: 'Nenhum resultado encontrado'
       });
+  }
+
+  private subscribeToPrefersColorScheme() {
+    const prefersColorScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    prefersColorScheme.addEventListener('change', this.onColorSchemeChange.bind(this));
+  }
+
+  private onColorSchemeChange(event: MediaQueryListEvent) {
+    this.updateTheme();
+  }
+
+  private updateTheme() {
+    const theme = this.themeService.getTheme();
+    this.themeService.switchTheme(theme)
   }
 }

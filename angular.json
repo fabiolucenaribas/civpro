@@ -39,11 +39,19 @@
               "src/theme/variables.scss", 
               "src/global.scss",
               "src/assets/css/layout.css",
-              "src/assets/css/theme-light.css",
-              "src/assets/css/theme-dark.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
-              "node_modules/primeflex/primeflex.css"
+              "node_modules/primeflex/primeflex.css",
+              {
+                "input": "src/theme/theme-dark.css",
+                "bundleName": "theme-dark",
+                "inject": false
+              },
+              {
+                "input": "src/theme/theme-light.css",
+                "bundleName": "theme-light",
+                "inject": false
+              }
             ],
             "scripts": [],
             "optimization": true,
