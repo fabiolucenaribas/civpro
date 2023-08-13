@@ -31,9 +31,9 @@ p-checkbox {
     float: right;
 }
 
-.p-menubar-root-list li:last-child {
+.p-menubar-root-list>li:last-child {
     position: absolute;
-    right: 5.4em;
+    right: 3em;
 }
 
 .loadingFile {
