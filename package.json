@@ -1,7 +1,11 @@
 {
   "name": "civpro",
   "version": "1.0.10",
-  "author": "Fábio Lucena Ribas",
+  "author": {
+    "name": "Fábio Lucena Ribas",
+    "email": "fabio.luce@outlook.com"
+  },
+  "description": "CIVPRO - Geração de formulario em PDF.",
   "homepage": "https://github.com/FabioLucenaRibas/civpro",
   "main": "app/main.js",
   "scripts": {
@@ -92,5 +96,7 @@
     "ts-node": "~10.9.1",
     "typescript": "~5.1.6"
   },
-  "description": "CIVPRO - Geração de formulario em PDF."
+  "optionalDependencies": {
+    "dmg-license": "^1.0.11"
+  }
 }

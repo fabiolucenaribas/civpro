@@ -4,7 +4,7 @@
 /** Ionic CSS Variables **/
 
 ion-content {
-  --ion-background-color: linear-gradient(180deg, #2E323F 0%, #0A061A 100%);
+  --ion-background-color: var(--surface-ground);
 }
 
 :root {
@@ -90,7 +90,7 @@ ion-content {
    */
 
   body {
-    --ion-background-color: linear-gradient(180deg, #2E323F 0%, #0A061A 100%);
+    --ion-background-color: var(--surface-ground);
 
     --ion-color-primary: #f4f5f8;
     --ion-color-primary-rgb: 244, 245, 248;

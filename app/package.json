@@ -1,6 +1,15 @@
 {
   "name": "civpro",
   "version": "1.0.10",
+  "author": {
+    "name": "Fábio Lucena Ribas",
+    "email": "fabio.luce@outlook.com"
+  },
+  "description": "https://github.com/FabioLucenaRibas/civpro",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FabioLucenaRibas/civpro.git"
+  },
   "main": "main.js",
   "private": true,
   "dependencies": {}

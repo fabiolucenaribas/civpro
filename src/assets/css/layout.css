@@ -1,0 +1,98 @@
+html {
+    font-size: 13px;
+}
+
+body {
+    background: var(--surface-ground);
+}
+
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child {
+    margin-top: 0;
+}
+
+h5 {
+    font-size: 1.25rem;
+}
+
+.card {
+    background: var(--surface-card);
+    box-sizing: border-box;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--card-shadow);
+    border-radius: 24px;
+    border: 1px solid var(--surface-100);
+}
+
+.card:last-child {
+    margin-bottom: 0
+}
+
+.card .card-header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1.15rem
+}
+
+.card .card-header h6 {
+    margin-bottom: 2px
+}
+
+.card .card-header .subtitle {
+    font-weight: 600;
+    color: var(--text-color-secondary)
+}
+
+.card .card-subtitle {
+    color: var(--text-color-secondary);
+    font-weight: 600
+}
+
+.card.no-gutter {
+    margin-bottom: 0
+}
+
+.p-menubar {
+    background: var(--surface-card) !important
+}
+
+.p-inputgroup>.p-float-label input:focus~label,
+.p-inputgroup>.p-float-label input.p-filled~label,
+.p-inputgroup>.p-float-label textarea:focus~label,
+.p-inputgroup>.p-float-label textarea.p-filled~label,
+.p-inputgroup>.p-float-label .p-inputwrapper-focus~label,
+.p-inputgroup>.p-float-label .p-inputwrapper-filled~label {
+    left: -1.1rem !important;
+}
+
+.p-float-label input:focus~label,
+.p-float-label input.p-filled~label,
+.p-float-label textarea:focus~label,
+.p-float-label textarea.p-filled~label,
+.p-float-label .p-inputwrapper-focus~label,
+.p-float-label .p-inputwrapper-filled~label {
+    top: -0.5rem !important;
+    background-color: #435969;
+    /* background-color: rgb(15 139 253); */
+    color: #ffffff !important;
+    border-radius: 4px;
+
+    padding: 2px 4px;
+    margin-left: -4px;
+    margin-top: 0;
+    left: 1.1rem;
+}
+
+.p-float-label input:focus~label>span,
+.p-float-label input.p-filled~label>span,
+.p-float-label textarea:focus~label>span,
+.p-float-label textarea.p-filled~label>span,
+.p-float-label .p-inputwrapper-focus~label>span,
+.p-float-label .p-inputwrapper-filled~label>span {
+    color: white;
+}

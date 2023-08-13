@@ -39,6 +39,7 @@ export class HomeComponent implements OnInit {
   estadoCivilOpcoes: any[];
   estados: any[];
   formulario = new Formulario();
+  showProgressSpinner = true;
 
   constructor(
     public domSanitizer: DomSanitizer,
@@ -52,6 +53,7 @@ export class HomeComponent implements OnInit {
     private alertController: AlertController,
     private actionSheetController: ActionSheetController
   ) {
+    this.showProgressSpinner = true;
     this.estadoCivilOpcoes = [
       { label: 'Solteiro', value: 'Solteiro' },
       { label: 'Casado', value: 'Casado' },
@@ -99,6 +101,7 @@ export class HomeComponent implements OnInit {
     this.primengConfig.ripple = true;
     this.carregarItemsMenu();
     this.recuperarEstadoFormulario();
+    setTimeout(()=> this.showProgressSpinner = false, 500)
   }
 
   recuperarEstadoFormulario() {

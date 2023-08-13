@@ -7,6 +7,7 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { HttpClientModule } from '@angular/common/http';
 
 import { FormsModule } from '@angular/forms';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -63,6 +64,7 @@ registerLocaleData(localePt);
         NgxExtendedPdfViewerModule,
         HttpClientModule,
         FormsModule,
+        ProgressSpinnerModule,
         InputTextModule,
         InputNumberModule,
         InputTextareaModule,
