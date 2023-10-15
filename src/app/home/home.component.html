@@ -18,8 +18,7 @@
 
         <div class="layout-content">
             <div *ngIf="!isPlataformMobile()" style="margin-bottom: 2rem;">
-                <p-menubar [model]="items" (click)="activeMenu($event)">
-                </p-menubar>
+                <p-menubar [model]="items"></p-menubar>
             </div>
 
             <form #formFormulario="ngForm">

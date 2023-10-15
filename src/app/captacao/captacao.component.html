@@ -1,0 +1,41 @@
+<p-progressSpinner *ngIf=showProgressSpinner class="loadingFile"></p-progressSpinner>
+<ion-app>
+    <ion-header *ngIf="isPlataformMobile()" translucent>
+        <ion-toolbar>
+            <ion-title>CIVPRO</ion-title>
+
+            <ion-buttons slot="end">
+                <ion-button id="options" (click)="presentOptionsActionSheet()">
+                    <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+        </ion-toolbar>
+    </ion-header>
+
+    <ion-content fullscreen>
+        <input type="file" id="file" accept=".json,application/json" style="display: none;">
+
+        <div class="layout-content">
+            <div *ngIf="!isPlataformMobile()" style="margin-bottom: 2rem;">
+                <p-menubar [model]="items"></p-menubar>
+            </div>
+
+            <form #formFormulario="ngForm">
+                <div class="card">
+                    <div class="p-fluid formgrid grid">
+                        <div class="field col-12 md:col-12 lg:col-12">
+                            <span class="p-float-label">
+                                <input id="float-input" type="text" ngDefaultControl name="empreendimento" disabled
+                                    class="form-control" pInputText>
+                                <label for="float-input">EM CONSTRUÇÃO</label>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <p-toast></p-toast>
+        <p-confirmDialog [style]="{'white-space': 'pre-wrap'}" [baseZIndex]="10000"></p-confirmDialog>
+    </ion-content>
+</ion-app>

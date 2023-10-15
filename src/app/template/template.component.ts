@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Platform, ToastController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Formulario } from '../model';
+import { Formulario } from '../model/compra';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import pdfMake from 'pdfmake/build/pdfmake';
 import htmlToPdfmake from 'html-to-pdfmake';

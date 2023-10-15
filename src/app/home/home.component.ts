@@ -5,21 +5,21 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { DatePipe } from '@angular/common';
 import { NgForm } from '@angular/forms';
 import { TemplateComponent } from '../template/template.component';
-import { Formulario } from '../model/formulario.model';
-import { Cliente } from '../model/cliente.model';
+import { Formulario } from '../model/compra/formulario.model';
+import { Cliente } from '../model/compra/cliente.model';
 import { Utils } from '../utils/Utils';
 import {
   ConfirmationService,
   MenuItem,
   MenuItemCommandEvent,
   MessageService,
-  PrimeIcons,
   PrimeNGConfig
 } from 'primeng/api';
 
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
-import { Opcoes } from '../model/opcoes.model';
+import { Opcoes } from '../model/compra/opcoes.model';
+import { AbstractComponent } from '../abstract.component';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +27,7 @@ import { Opcoes } from '../model/opcoes.model';
   styleUrls: ['./home.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent extends AbstractComponent implements OnInit {
 
   static readonly formularioKey: string = 'formulario';
 
@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
   constructor(
     public domSanitizer: DomSanitizer,
     private router: Router,
-    private platform: Platform,
+    protected platform: Platform,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private primengConfig: PrimeNGConfig,
@@ -53,12 +53,13 @@ export class HomeComponent implements OnInit {
     private alertController: AlertController,
     private actionSheetController: ActionSheetController
   ) {
+    super(platform)
     this.showProgressSpinner = true;
     this.estadoCivilOpcoes = Utils.getEstadosCivil();
     this.estados = Utils.getEstados();
 
     this.platform.backButton.subscribeWithPriority(10, () => {
-      this.router.navigateByUrl('home');
+      this.router.navigateByUrl('/');
     });
   }
 
@@ -87,12 +88,6 @@ export class HomeComponent implements OnInit {
         this.formulario.opcoes.corretor = false;
         this.formulario.opcoes.gerente = false;
       }
-    }
-  }
-
-  activeMenu(event: any) {
-    if (event.target.id === 'carregar') {
-      this.carregar();
     }
   }
 
@@ -159,7 +154,7 @@ export class HomeComponent implements OnInit {
         zip.file(filenamePDF, result, { base64: true });
 
         zip.generateAsync({ type: 'blob' })
-          .then(function(content) {
+          .then(function (content) {
             saveAs(content, dateFormated + '.zip');
           });
       }
@@ -218,51 +213,29 @@ export class HomeComponent implements OnInit {
   }
 
   carregarItemsMenu() {
-    this.items = [
-      {
-        id: 'formulario',
-        label: 'Formularios',
-        icon: PrimeIcons.LIST,
-        items: [
-          {
-            id: 'compra',
-            label: 'Compra',
-            icon: PrimeIcons.ALIGN_LEFT,
-            command: (event: MenuItemCommandEvent) => { this.router.navigateByUrl('/'); }
-          },
-          {
-            id: 'captacao',
-            label: 'Captação',
-            icon: PrimeIcons.ALIGN_LEFT,
-            command: (event: MenuItemCommandEvent) => { this.router.navigateByUrl('captacao'); }
-          }
-        ]
+
+    const opcoes = {
+      compra: {
+        visible: false
       },
-      {
-        id: 'novo',
-        label: 'Novo',
-        icon: PrimeIcons.PLUS,
+      captacao: {
+        command: (event: MenuItemCommandEvent) => { this.router.navigateByUrl('captacao'); }
+      },
+      novo: {
         command: (event: MenuItemCommandEvent) => { this.confirmaNovoFormulario(); }
       },
-      {
-        id: 'carregar',
-        label: 'Carregar',
-        icon: PrimeIcons.UPLOAD,
+      carregar: {
+        command: (event: MenuItemCommandEvent) => { this.carregar(); }
       },
-      {
-        id: 'salvar',
-        label: 'Salvar',
-        icon: PrimeIcons.SAVE,
+      salvar: {
         command: (event: MenuItemCommandEvent) => { this.baixarFormulario(); }
       },
-      {
-        id: 'exportar',
-        label: 'Exportar',
-        icon: PrimeIcons.FILE_PDF,
-        target: 'file',
-        command: (event: MenuItemCommandEvent) => {  this.exportar(); }
+      exportar: {
+        command: (event: MenuItemCommandEvent) => { this.exportar(); }
       }
-    ];
+    }
+    
+    this.items = Utils.getMenuItems(opcoes)
   }
 
   validarCpf(event: any) {
@@ -315,17 +288,5 @@ export class HomeComponent implements OnInit {
 
     const { role, data } = await actionSheet.onDidDismiss();
     console.log('onDidDismiss resolved with role and data', role, data);
-  }
-
-  isPlataformMobile(): boolean {
-    return this.isPlataformMobileIos() || this.isPlataformMobileAndroid();
-  }
-
-  isPlataformMobileIos(): boolean {
-    return this.platform.is('ios');
-  }
-
-  isPlataformMobileAndroid(): boolean {
-    return this.platform.is('android');
   }
 }

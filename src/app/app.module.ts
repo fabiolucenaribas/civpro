@@ -41,9 +41,10 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CaptacaoComponent } from './captacao/captacao.component';
+import { HomeComponent } from './home/home.component';
 import { TemplateComponent } from './template/template.component';
 import { ViewerPdfComponent } from './viewer-pdf/viewer-pdf.component';
-import { HomeComponent } from './home/home.component';
 
 const maskConfig: Partial<IConfig> = {
   validation: true,
@@ -54,6 +55,7 @@ registerLocaleData(localePt);
 @NgModule({
     declarations: [
         AppComponent,
+        CaptacaoComponent,
         HomeComponent,
         TemplateComponent,
         ViewerPdfComponent

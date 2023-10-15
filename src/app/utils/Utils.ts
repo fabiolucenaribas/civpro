@@ -1,6 +1,6 @@
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { Platform, ToastController, AlertController } from '@ionic/angular';
-import { Confirmation, ConfirmationService, MessageService } from 'primeng/api';
+import { Confirmation, ConfirmationService, MessageService, PrimeIcons } from 'primeng/api';
 
 export class Utils {
 
@@ -201,5 +201,56 @@ export class Utils {
       { label: 'Casado', value: 'Casado' },
       { label: 'Outros', value: 'Outros' }
     ]
+  }
+
+  public static getMenuItems(opcoes: any){
+    return [
+      {
+        id: 'formulario',
+        label: 'Formularios',
+        icon: PrimeIcons.LIST,
+        items: [
+          {
+            id: 'compra',
+            label: 'Compra',
+            icon: PrimeIcons.ALIGN_LEFT,
+            command: opcoes?.compra?.command,
+            visible: opcoes?.compra?.visible
+          },
+          {
+            id: 'captacao',
+            label: 'Captação',
+            icon: PrimeIcons.ALIGN_LEFT,
+            command: opcoes?.captacao?.command,
+            visible: opcoes?.captacao?.visible
+          }
+        ]
+      },
+      {
+        id: 'novo',
+        label: 'Novo',
+        icon: PrimeIcons.PLUS,
+        command: opcoes?.novo?.command
+      },
+      {
+        id: 'carregar',
+        label: 'Carregar',
+        icon: PrimeIcons.UPLOAD,
+        command: opcoes?.carregar?.command
+      },
+      {
+        id: 'salvar',
+        label: 'Salvar',
+        icon: PrimeIcons.SAVE,
+        command: opcoes?.salvar?.command
+      },
+      {
+        id: 'exportar',
+        label: 'Exportar',
+        icon: PrimeIcons.FILE_PDF,
+        target: 'file',
+        command: opcoes?.exportar?.command
+      }
+    ];
   }
 }
