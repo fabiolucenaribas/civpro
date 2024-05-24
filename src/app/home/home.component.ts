@@ -5,20 +5,24 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { DatePipe } from '@angular/common';
 import { NgForm } from '@angular/forms';
 import { TemplateComponent } from '../template/template.component';
-import { Formulario } from '../model/formulario.model';
-import { Cliente } from '../model/cliente.model';
+import { Formulario } from '../model/compra/formulario.model';
+import { Cliente } from '../model/compra/cliente.model';
 import { Utils } from '../utils/Utils';
 import {
   ConfirmationService,
   MenuItem,
+  MenuItemCommandEvent,
   MessageService,
-  PrimeIcons,
   PrimeNGConfig
 } from 'primeng/api';
 
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
-import { Opcoes } from '../model/opcoes.model';
+import { Opcoes } from '../model/compra/opcoes.model';
+import { AbstractComponent } from '../abstract.component';
+import { TabViewCloseEvent } from 'primeng/tabview';
+import { v4 as uuidv4 } from 'uuid';
+import { SelectButtonOptionClickEvent } from 'primeng/selectbutton';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +30,7 @@ import { Opcoes } from '../model/opcoes.model';
   styleUrls: ['./home.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent extends AbstractComponent implements OnInit {
 
   static readonly formularioKey: string = 'formulario';
 
@@ -38,11 +42,13 @@ export class HomeComponent implements OnInit {
   estadoCivilOpcoes: any[];
   estados: any[];
   formulario = new Formulario();
+  showProgressSpinner = true;
+  visibleConfigureView = false;
 
   constructor(
     public domSanitizer: DomSanitizer,
     private router: Router,
-    private platform: Platform,
+    protected platform: Platform,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private primengConfig: PrimeNGConfig,
@@ -51,45 +57,13 @@ export class HomeComponent implements OnInit {
     private alertController: AlertController,
     private actionSheetController: ActionSheetController
   ) {
-    this.estadoCivilOpcoes = [
-      { label: 'Solteiro', value: 'Solteiro' },
-      { label: 'Casado', value: 'Casado' },
-      { label: 'Outros', value: 'Outros' }
-    ];
-
-    this.estados = [
-      { label: 'Acre', value: 'Acre' },
-      { label: 'Alagoas', value: 'Alagoas' },
-      { label: 'Amapá', value: 'Amapá' },
-      { label: 'Amazonas', value: 'Amazonas' },
-      { label: 'Bahia', value: 'Bahia' },
-      { label: 'Ceará', value: 'Ceará' },
-      { label: 'Distrito Federal', value: 'Distrito Federal' },
-      { label: 'Espírito Santo', value: 'Espírito Santo' },
-      { label: 'Goiás', value: 'Goiás' },
-      { label: 'Maranhão', value: 'Maranhão' },
-      { label: 'Mato Grosso', value: 'Mato Grosso' },
-      { label: 'Mato Grosso do Sul', value: 'Mato Grosso do Sul' },
-      { label: 'Minas Gerais', value: 'Minas Gerais' },
-      { label: 'Pará', value: 'Pará' },
-      { label: 'Paraíba', value: 'Paraíba' },
-      { label: 'Paraná', value: 'Paraná' },
-      { label: 'Pernambuco', value: 'Pernambuco' },
-      { label: 'Piauí', value: 'Piauí' },
-      { label: 'Rio de Janeiro', value: 'Rio de Janeiro' },
-      { label: 'Rio Grande do Norte', value: 'Rio Grande do Norte' },
-      { label: 'Rio Grande do Sul', value: 'Rio Grande do Sul' },
-      { label: 'Rondônia', value: 'Rondônia' },
-      { label: 'Roraima', value: 'Roraima' },
-      { label: 'Santa Catarina', value: 'Santa Catarina' },
-      { label: 'São Paulo', value: 'São Paulo' },
-      { label: 'Sergipe', value: 'Sergipe' },
-      { label: 'Tocantins', value: 'Tocantins' },
-      { label: 'Solteiro', value: 'Solteiro' }
-    ];
+    super(platform)
+    this.showProgressSpinner = true;
+    this.estadoCivilOpcoes = Utils.getEstadosCivil();
+    this.estados = Utils.getEstados();
 
     this.platform.backButton.subscribeWithPriority(10, () => {
-      this.router.navigateByUrl('home');
+      this.router.navigateByUrl('/');
     });
   }
 
@@ -98,6 +72,7 @@ export class HomeComponent implements OnInit {
     this.primengConfig.ripple = true;
     this.carregarItemsMenu();
     this.recuperarEstadoFormulario();
+    setTimeout(() => this.showProgressSpinner = false, 500);
   }
 
   recuperarEstadoFormulario() {
@@ -106,23 +81,16 @@ export class HomeComponent implements OnInit {
       this.formulario = JSON.parse(formulario);
 
       for (const cliente of this.formulario.dadosClientes) {
-        if (cliente.dados.dataNascimento){
+        cliente.id = cliente.id ? cliente.id : uuidv4();
+
+        if (cliente.dados.dataNascimento) {
           cliente.dados.dataNascimento = new Date(cliente.dados.dataNascimento);
         }
       }
 
       if (!this.formulario.opcoes) {
         this.formulario.opcoes = new Opcoes();
-        this.formulario.opcoes.clienteConjuge = false;
-        this.formulario.opcoes.corretor = false;
-        this.formulario.opcoes.gerente = false;
       }
-    }
-  }
-
-  activeMenu(event: any) {
-    if (event.target.id === 'carregar') {
-      this.carregar();
     }
   }
 
@@ -144,16 +112,15 @@ export class HomeComponent implements OnInit {
       this.formulario = JSON.parse(result);
 
       for (const cliente of this.formulario.dadosClientes) {
-        if (cliente.dados.dataNascimento){
+        cliente.id = cliente.id ? cliente.id : uuidv4();
+
+        if (cliente.dados.dataNascimento) {
           cliente.dados.dataNascimento = new Date(cliente.dados.dataNascimento);
         }
       }
 
       if (!this.formulario.opcoes) {
         this.formulario.opcoes = new Opcoes();
-        this.formulario.opcoes.clienteConjuge = false;
-        this.formulario.opcoes.corretor = false;
-        this.formulario.opcoes.gerente = false;
       }
     };
     fileReader.readAsText(files.item(0));
@@ -189,7 +156,7 @@ export class HomeComponent implements OnInit {
         zip.file(filenamePDF, result, { base64: true });
 
         zip.generateAsync({ type: 'blob' })
-          .then(function(content) {
+          .then(function (content) {
             saveAs(content, dateFormated + '.zip');
           });
       }
@@ -198,9 +165,9 @@ export class HomeComponent implements OnInit {
 
   exportar() {
     // if (!this.formFormulario.form.valid) {
-      // this.confirmarExporta();
+    // this.confirmarExporta();
     // } else {
-      this.gerarPdf();
+    this.gerarPdf();
     // }
   }
 
@@ -216,13 +183,13 @@ export class HomeComponent implements OnInit {
       localStorage.removeItem(HomeComponent.formularioKey);
       this.formulario = new Formulario();
       await Utils.notificacao('Um novo formulario foi gerado.', this.platform, this.toastController, this.messageService);
-    }, this.platform, this.alertController, this.confirmationService);
+    }, async () => {}, this.platform, this.alertController, this.confirmationService);
   }
 
   async confirmarExporta() {
     await Utils.dialog('Atenção!', 'Ainda possui campos obrigatórios não preenchidos.\nDeseja continuar?', async () => {
       this.gerarPdf();
-    }, this.platform, this.alertController, this.confirmationService);
+    }, async () => {},this.platform, this.alertController, this.confirmationService);
   }
 
   uploadLogo(files: FileList) {
@@ -233,47 +200,102 @@ export class HomeComponent implements OnInit {
     fileReader.readAsBinaryString(files.item(0));
   }
 
-  gerarCliente2() {
-    const clientes = this.formulario.dadosClientes;
+  async gerarConjuge(event: SelectButtonOptionClickEvent, index) {
+    console.log(event)
+    let clientes = this.formulario.dadosClientes;
 
-    const primeiroCliente = clientes[0];
-    delete primeiroCliente.dados.estadocivilespecifico;
-    delete primeiroCliente.dados.regimeComunhao;
+    const cliente = clientes[index];
+    delete cliente.dados.estadocivilespecifico;
+    delete cliente.dados.regimeComunhao;
 
-    if (clientes.length > 1) {
-      clientes.splice(2, 1);
-    } else {
-      clientes.push(new Cliente());
+    const estadocivilAnterior = cliente.dados.estadocivil;
+    cliente.dados.estadocivil = event.option?.value;
+    let isConjuge = cliente.dados.estadocivil !== 'Solteiro';
+
+    let clienteConjuge = clientes.filter(c => c.idRelacao == cliente.id && c.conjuge)
+
+    if (isConjuge) {
+      if (!clienteConjuge || clienteConjuge.length == 0) {
+        clientes.splice(index + 1, 0, new Cliente({ idRelacao: cliente.id, conjuge: true }));
+      }
+    } else if (clienteConjuge && clienteConjuge.length > 0) {
+      const nomeConjuge = this.nomeCurtoConjuge(clienteConjuge[0]?.dados?.nome)
+      await Utils.dialog('Atenção!', 'O cliente "' + nomeConjuge + '" será removido.\nDeseja continuar?', async () => {
+        clientes.splice(clientes.indexOf(clienteConjuge[0]), 1);
+        await Utils.notificacao('O Cliente "' + nomeConjuge + '" removido.', this.platform, this.toastController, this.messageService);
+      }, async () => {
+        cliente.dados.estadocivil = estadocivilAnterior;
+      }, this.platform, this.alertController, this.confirmationService);
     }
+    console.log(clientes)
+  }
+
+  async adicionarCliente() {
+    let clientes = this.formulario.dadosClientes;
+    clientes.push(new Cliente());
+    await Utils.notificacao('Novo cliente adicionado.', this.platform, this.toastController, this.messageService);
+  }
+
+  async removerCliente(event: TabViewCloseEvent) {
+    let clientes = this.formulario.dadosClientes;
+    const index = event.index;
+    const cliente = clientes[index];
+
+    let clienteConjuge = clientes.filter(c => c .idRelacao == cliente.id && c.conjuge);
+    const possuiConjuge = clienteConjuge && clienteConjuge.length > 0;
+    
+    const nomeCliente = cliente?.dados?.nome ? this.nomeCurto(cliente.dados.nome) : 'Cliente ' + (index + 1)
+    const nomeConjuge = this.nomeCurtoConjuge(clienteConjuge[0]?.dados?.nome)
+
+    let mensagem;
+    if (possuiConjuge){
+      mensagem = 'O cliente "' + nomeCliente + ' e "' + nomeConjuge + '" serão removidos.\nDeseja continuar?'
+    }else{
+      mensagem = 'O cliente "' + nomeCliente + '" será removido.\nDeseja continuar?'
+    }
+
+    await Utils.dialog('Atenção!', mensagem, async () => {
+      event.close();
+
+      clientes.splice(index, 1);
+      await Utils.notificacao('O Cliente "' + nomeCliente + '" removido.', this.platform, this.toastController, this.messageService);
+
+      if (possuiConjuge){
+        clientes.splice(clientes.indexOf(clienteConjuge[0]), 1);
+        await Utils.notificacao('O Cliente "' + nomeConjuge + '" removido.', this.platform, this.toastController, this.messageService);
+      }
+    }, async () => {}, this.platform, this.alertController, this.confirmationService);
+
   }
 
   carregarItemsMenu() {
-    this.items = [
-      {
-        id: 'novo',
-        label: 'Novo',
-        icon: PrimeIcons.PLUS,
-        command: (event: Event) => { this.confirmaNovoFormulario(); }
+
+    const opcoes = {
+      compra: {
+        visible: false
       },
-      {
-        id: 'carregar',
-        label: 'Carregar',
-        icon: PrimeIcons.UPLOAD,
+      captacao: {
+        command: (event: MenuItemCommandEvent) => { this.router.navigateByUrl('captacao'); }
       },
-      {
-        id: 'salvar',
-        label: 'Salvar',
-        icon: PrimeIcons.SAVE,
-        command: (event: Event) => { this.baixarFormulario(); }
+      novo: {
+        command: (event: MenuItemCommandEvent) => { this.confirmaNovoFormulario(); }
       },
-      {
-        id: 'exportar',
-        label: 'Exportar',
-        icon: PrimeIcons.FILE_PDF,
-        target: 'file',
-        command: (event: Event) => { this.exportar(); }
+      carregar: {
+        command: (event: MenuItemCommandEvent) => { this.carregar(); }
+      },
+      salvar: {
+        command: (event: MenuItemCommandEvent) => { this.baixarFormulario(); }
+      },
+      config: {
+        command: (event: MenuItemCommandEvent) => { this.showConfigureView(); },
+        visible: true
+      },
+      exportar: {
+        command: (event: MenuItemCommandEvent) => { this.exportar(); }
       }
-    ];
+    }
+    
+    this.items = Utils.getMenuItems(opcoes)
   }
 
   validarCpf(event: any) {
@@ -328,15 +350,16 @@ export class HomeComponent implements OnInit {
     console.log('onDidDismiss resolved with role and data', role, data);
   }
 
-  isPlataformMobile(): boolean {
-    return this.isPlataformMobileIos() || this.isPlataformMobileAndroid();
+  showConfigureView() {
+    this.visibleConfigureView = true;
   }
 
-  isPlataformMobileIos(): boolean {
-    return this.platform.is('ios');
+  nomeCurtoConjuge(frase: string): string {
+    return frase ? this.nomeCurto(frase) + ' (Conjuge)' : 'Conjuge'
   }
 
-  isPlataformMobileAndroid(): boolean {
-    return this.platform.is('android');
+  nomeCurto(frase: string): string {
+    const palavras = frase?.trim().split(" ");
+    return palavras && palavras.length >= 2 ? `${palavras[0]} ${palavras[palavras.length - 1]}` : frase;
   }
 }

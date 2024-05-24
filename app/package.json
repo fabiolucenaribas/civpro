@@ -1,7 +1,20 @@
 {
   "name": "civpro",
-  "version": "1.0.10",
+  "version": "1.1.0",
+  "author": {
+    "name": "Fábio Lucena Ribas",
+    "email": "fabio.luce@outlook.com"
+  },
+  "description": "https://github.com/FabioLucenaRibas/civpro",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FabioLucenaRibas/civpro.git"
+  },
   "main": "main.js",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "electron-log": "^4.4.8",
+    "electron-update-checker-notifier": "^1.1.2",
+    "electron-updater": "^6.1.1"
+  }
 }

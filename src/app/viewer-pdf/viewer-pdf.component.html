@@ -2,7 +2,7 @@
   <ion-header translucent>
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-back-button defaultHref="home"></ion-back-button>
+        <ion-back-button defaultHref="/"></ion-back-button>
       </ion-buttons>
       <ion-title>CIVPRO</ion-title>
     </ion-toolbar>
@@ -18,7 +18,6 @@
     <ngx-extended-pdf-viewer
     [base64Src]="pdfSrc"
     [zoom]="'page-width'"
-    [enablePinchOnMobile]="true"
     [showSidebarButton]="false"
     [showFindButton]="false"
     [showPagingButtons]="false"
@@ -28,7 +27,6 @@
     [showPrintButton]="false"
     [showDownloadButton]="false"
     [filenameForDownload]="false"
-    [showBookmarkButton]="false"
     [showSecondaryToolbarButton]="false"
     [showRotateButton]="false"
     [showHandToolButton]="false"

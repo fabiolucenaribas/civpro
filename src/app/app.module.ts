@@ -7,6 +7,7 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { HttpClientModule } from '@angular/common/http';
 
 import { FormsModule } from '@angular/forms';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -21,6 +22,7 @@ import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { AccordionModule } from 'primeng/accordion';
 import { CheckboxModule } from 'primeng/checkbox';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 import { MenubarModule } from 'primeng/menubar';
 import { DialogModule } from 'primeng/dialog';
@@ -40,9 +42,10 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CaptacaoComponent } from './captacao/captacao.component';
+import { HomeComponent } from './home/home.component';
 import { TemplateComponent } from './template/template.component';
 import { ViewerPdfComponent } from './viewer-pdf/viewer-pdf.component';
-import { HomeComponent } from './home/home.component';
 
 const maskConfig: Partial<IConfig> = {
   validation: true,
@@ -53,6 +56,7 @@ registerLocaleData(localePt);
 @NgModule({
     declarations: [
         AppComponent,
+        CaptacaoComponent,
         HomeComponent,
         TemplateComponent,
         ViewerPdfComponent
@@ -63,6 +67,7 @@ registerLocaleData(localePt);
         NgxExtendedPdfViewerModule,
         HttpClientModule,
         FormsModule,
+        ProgressSpinnerModule,
         InputTextModule,
         InputNumberModule,
         InputTextareaModule,
@@ -74,6 +79,7 @@ registerLocaleData(localePt);
         TabViewModule,
         AccordionModule,
         CheckboxModule,
+        InputSwitchModule,
         MenubarModule,
         DialogModule,
         ConfirmDialogModule,
