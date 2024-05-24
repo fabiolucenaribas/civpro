@@ -21,6 +21,7 @@
     }
   ],
   "win": {
+    "artifactName": "CIVPRO-Setup-${version}.${ext}",
     "icon": "app/assets/icon.ico",
     "target": [
       "nsis",
@@ -28,9 +29,11 @@
     ]
   },
   "portable": {
+    "artifactName": "CIVPRO-Portable-${version}.${ext}",
     "splashImage": "app/assets/electron.bmp"
   },
   "mac": {
+    "artifactName": "CIVPRO-mac-${version}.${ext}",
     "icon": "app/assets/icon.icns",
     "target": [
       "dmg"
@@ -38,6 +41,7 @@
   },
   "linux": {
     "icon": "app/assets/icon.icns",
+    "category": "Development",
     "target": [
       "deb",
       "AppImage"
