@@ -91,10 +91,10 @@ export class TemplateComponent {
   }
 
   getClientesVisiveis(): Cliente[][] {
-    const clientesVisiveis: Cliente[] = this.formulario.dadosClientes.filter(cliente => cliente.visivel);
+    const clientesVisiveis: Cliente[] = this.formulario?.dadosClientes.filter(cliente => cliente.visivel);
     const gruposClientes: Cliente[][] = [];
   
-    for (let i = 0; i < clientesVisiveis.length; i += 3) {
+    for (let i = 0; i < clientesVisiveis?.length; i += 3) {
       gruposClientes.push(clientesVisiveis.slice(i, i + 3));
     }
   
