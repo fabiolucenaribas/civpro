@@ -7,6 +7,7 @@ import { Formulario } from '../model/compra';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import pdfMake from 'pdfmake/build/pdfmake';
 import htmlToPdfmake from 'html-to-pdfmake';
+import { Cliente } from '../model/compra/cliente.model';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -87,5 +88,16 @@ export class TemplateComponent {
     };
 
     return pdfMake.createPdf(documentDefinition);
+  }
+
+  getClientesVisiveis(): Cliente[][] {
+    const clientesVisiveis: Cliente[] = this.formulario.dadosClientes.filter(cliente => cliente.visivel);
+    const gruposClientes: Cliente[][] = [];
+  
+    for (let i = 0; i < clientesVisiveis.length; i += 3) {
+      gruposClientes.push(clientesVisiveis.slice(i, i + 3));
+    }
+  
+    return gruposClientes;
   }
 }

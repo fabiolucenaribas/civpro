@@ -20,6 +20,9 @@ import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 import { Opcoes } from '../model/compra/opcoes.model';
 import { AbstractComponent } from '../abstract.component';
+import { TabViewCloseEvent } from 'primeng/tabview';
+import { v4 as uuidv4 } from 'uuid';
+import { SelectButtonOptionClickEvent } from 'primeng/selectbutton';
 
 @Component({
   selector: 'app-home',
@@ -40,6 +43,7 @@ export class HomeComponent extends AbstractComponent implements OnInit {
   estados: any[];
   formulario = new Formulario();
   showProgressSpinner = true;
+  visibleConfigureView = false;
 
   constructor(
     public domSanitizer: DomSanitizer,
@@ -77,6 +81,8 @@ export class HomeComponent extends AbstractComponent implements OnInit {
       this.formulario = JSON.parse(formulario);
 
       for (const cliente of this.formulario.dadosClientes) {
+        cliente.id = cliente.id ? cliente.id : uuidv4();
+
         if (cliente.dados.dataNascimento) {
           cliente.dados.dataNascimento = new Date(cliente.dados.dataNascimento);
         }
@@ -84,9 +90,6 @@ export class HomeComponent extends AbstractComponent implements OnInit {
 
       if (!this.formulario.opcoes) {
         this.formulario.opcoes = new Opcoes();
-        this.formulario.opcoes.clienteConjuge = false;
-        this.formulario.opcoes.corretor = false;
-        this.formulario.opcoes.gerente = false;
       }
     }
   }
@@ -109,6 +112,8 @@ export class HomeComponent extends AbstractComponent implements OnInit {
       this.formulario = JSON.parse(result);
 
       for (const cliente of this.formulario.dadosClientes) {
+        cliente.id = cliente.id ? cliente.id : uuidv4();
+
         if (cliente.dados.dataNascimento) {
           cliente.dados.dataNascimento = new Date(cliente.dados.dataNascimento);
         }
@@ -116,9 +121,6 @@ export class HomeComponent extends AbstractComponent implements OnInit {
 
       if (!this.formulario.opcoes) {
         this.formulario.opcoes = new Opcoes();
-        this.formulario.opcoes.clienteConjuge = false;
-        this.formulario.opcoes.corretor = false;
-        this.formulario.opcoes.gerente = false;
       }
     };
     fileReader.readAsText(files.item(0));
@@ -181,13 +183,13 @@ export class HomeComponent extends AbstractComponent implements OnInit {
       localStorage.removeItem(HomeComponent.formularioKey);
       this.formulario = new Formulario();
       await Utils.notificacao('Um novo formulario foi gerado.', this.platform, this.toastController, this.messageService);
-    }, this.platform, this.alertController, this.confirmationService);
+    }, async () => {}, this.platform, this.alertController, this.confirmationService);
   }
 
   async confirmarExporta() {
     await Utils.dialog('Atenção!', 'Ainda possui campos obrigatórios não preenchidos.\nDeseja continuar?', async () => {
       this.gerarPdf();
-    }, this.platform, this.alertController, this.confirmationService);
+    }, async () => {},this.platform, this.alertController, this.confirmationService);
   }
 
   uploadLogo(files: FileList) {
@@ -198,18 +200,72 @@ export class HomeComponent extends AbstractComponent implements OnInit {
     fileReader.readAsBinaryString(files.item(0));
   }
 
-  gerarCliente2() {
-    const clientes = this.formulario.dadosClientes;
+  async gerarConjuge(event: SelectButtonOptionClickEvent, index) {
+    console.log(event)
+    let clientes = this.formulario.dadosClientes;
 
-    const primeiroCliente = clientes[0];
-    delete primeiroCliente.dados.estadocivilespecifico;
-    delete primeiroCliente.dados.regimeComunhao;
+    const cliente = clientes[index];
+    delete cliente.dados.estadocivilespecifico;
+    delete cliente.dados.regimeComunhao;
 
-    if (clientes.length > 1) {
-      clientes.splice(2, 1);
-    } else {
-      clientes.push(new Cliente());
+    const estadocivilAnterior = cliente.dados.estadocivil;
+    cliente.dados.estadocivil = event.option?.value;
+    let isConjuge = cliente.dados.estadocivil !== 'Solteiro';
+
+    let clienteConjuge = clientes.filter(c => c.idRelacao == cliente.id && c.conjuge)
+
+    if (isConjuge) {
+      if (!clienteConjuge || clienteConjuge.length == 0) {
+        clientes.splice(index + 1, 0, new Cliente({ idRelacao: cliente.id, conjuge: true }));
+      }
+    } else if (clienteConjuge && clienteConjuge.length > 0) {
+      const nomeConjuge = this.nomeCurtoConjuge(clienteConjuge[0]?.dados?.nome)
+      await Utils.dialog('Atenção!', 'O cliente "' + nomeConjuge + '" será removido.\nDeseja continuar?', async () => {
+        clientes.splice(clientes.indexOf(clienteConjuge[0]), 1);
+        await Utils.notificacao('O Cliente "' + nomeConjuge + '" removido.', this.platform, this.toastController, this.messageService);
+      }, async () => {
+        cliente.dados.estadocivil = estadocivilAnterior;
+      }, this.platform, this.alertController, this.confirmationService);
     }
+    console.log(clientes)
+  }
+
+  async adicionarCliente() {
+    let clientes = this.formulario.dadosClientes;
+    clientes.push(new Cliente());
+    await Utils.notificacao('Novo cliente adicionado.', this.platform, this.toastController, this.messageService);
+  }
+
+  async removerCliente(event: TabViewCloseEvent) {
+    let clientes = this.formulario.dadosClientes;
+    const index = event.index;
+    const cliente = clientes[index];
+
+    let clienteConjuge = clientes.filter(c => c .idRelacao == cliente.id && c.conjuge);
+    const possuiConjuge = clienteConjuge && clienteConjuge.length > 0;
+    
+    const nomeCliente = cliente?.dados?.nome ? this.nomeCurto(cliente.dados.nome) : 'Cliente ' + (index + 1)
+    const nomeConjuge = this.nomeCurtoConjuge(clienteConjuge[0]?.dados?.nome)
+
+    let mensagem;
+    if (possuiConjuge){
+      mensagem = 'O cliente "' + nomeCliente + ' e "' + nomeConjuge + '" serão removidos.\nDeseja continuar?'
+    }else{
+      mensagem = 'O cliente "' + nomeCliente + '" será removido.\nDeseja continuar?'
+    }
+
+    await Utils.dialog('Atenção!', mensagem, async () => {
+      event.close();
+
+      clientes.splice(index, 1);
+      await Utils.notificacao('O Cliente "' + nomeCliente + '" removido.', this.platform, this.toastController, this.messageService);
+
+      if (possuiConjuge){
+        clientes.splice(clientes.indexOf(clienteConjuge[0]), 1);
+        await Utils.notificacao('O Cliente "' + nomeConjuge + '" removido.', this.platform, this.toastController, this.messageService);
+      }
+    }, async () => {}, this.platform, this.alertController, this.confirmationService);
+
   }
 
   carregarItemsMenu() {
@@ -229,6 +285,10 @@ export class HomeComponent extends AbstractComponent implements OnInit {
       },
       salvar: {
         command: (event: MenuItemCommandEvent) => { this.baixarFormulario(); }
+      },
+      config: {
+        command: (event: MenuItemCommandEvent) => { this.showConfigureView(); },
+        visible: true
       },
       exportar: {
         command: (event: MenuItemCommandEvent) => { this.exportar(); }
@@ -288,5 +348,18 @@ export class HomeComponent extends AbstractComponent implements OnInit {
 
     const { role, data } = await actionSheet.onDidDismiss();
     console.log('onDidDismiss resolved with role and data', role, data);
+  }
+
+  showConfigureView() {
+    this.visibleConfigureView = true;
+  }
+
+  nomeCurtoConjuge(frase: string): string {
+    return frase ? this.nomeCurto(frase) + ' (Conjuge)' : 'Conjuge'
+  }
+
+  nomeCurto(frase: string): string {
+    const palavras = frase?.trim().split(" ");
+    return palavras && palavras.length >= 2 ? `${palavras[0]} ${palavras[palavras.length - 1]}` : frase;
   }
 }

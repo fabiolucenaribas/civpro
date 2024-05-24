@@ -17,15 +17,15 @@ export class Utils {
     } else {
       if (messageService !== undefined) {
         messageService.add({
-          severity: 'success',
-          summary: 'Sucesso',
+          severity: 'info',
+          summary: 'Informação',
           detail: mensagem
         });
       }
     }
   }
 
-  public static async dialog(titulo: string, mensagem: string, handlerAccept: any,
+  public static async dialog(titulo: string, mensagem: string, handlerAccept: any, handleReject: any,
     platform: Platform, alertController: AlertController, confirmationService: ConfirmationService) {
     if (platform.is('ios') || platform.is('android')) {
       const alert = await alertController.create({
@@ -37,6 +37,9 @@ export class Utils {
             role: 'Cancelar',
             cssClass: 'secondary',
             id: 'cancel-button',
+            handler: () => {
+              handleReject();
+            }
           }, {
             text: 'Ok',
             id: 'confirm-button',
@@ -59,6 +62,9 @@ export class Utils {
         acceptIcon: 'pi pi-check',
         defaultFocus: 'reject',
         acceptButtonStyleClass: 'p-button-text p-button-secondary',
+        reject: () => {
+          handleReject();
+        },
         accept: () => {
           handlerAccept();
         }
@@ -243,6 +249,13 @@ export class Utils {
         label: 'Salvar',
         icon: PrimeIcons.SAVE,
         command: opcoes?.salvar?.command
+      },
+      {
+        id: 'config',
+        label: 'Configuração',
+        icon: PrimeIcons.COG,
+        command: opcoes?.config?.command,
+        visible: opcoes?.config?.visible
       },
       {
         id: 'exportar',

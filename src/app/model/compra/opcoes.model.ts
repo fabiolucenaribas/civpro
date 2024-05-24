@@ -1,11 +1,11 @@
 export class Opcoes {
-    clienteConjuge: boolean;
-    corretor: boolean;
-    gerente: boolean;
+    exibirAssinaturaCliente: boolean;
+    exibirAssinaturaCorretor: boolean;
+    exibirAssinaturaGerente: boolean;
 
     constructor() {
-        this.clienteConjuge = true;
-        this.corretor = true;
-        this.gerente = true;
+        this.exibirAssinaturaCliente = true;
+        this.exibirAssinaturaCorretor = true;
+        this.exibirAssinaturaGerente = true;
     }
 }

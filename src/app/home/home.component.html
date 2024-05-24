@@ -67,14 +67,23 @@
                 </div>
 
                 <div class="card ">
-                    <p-tabView>
-                        <p-tabPanel *ngFor="let cliente of formulario.dadosClientes; index as index; first as isFirst"
-                            [header]="isFirst ? 'Cliente' : formulario.dadosClientes[0].dados.estadocivil === 'Solteiro' ? 'Cliente 2' : 'Cônjuge'"
-                            [selected]="isFirst" leftIcon="pi pi-user">
+                    <div class="flex justify-content-between flex-wrap">
+                        <h5><i class="pi pi-user"></i> Clientes</h5>
+                        <button pButton pRipple label="Adicionar Cliente" (click)="adicionarCliente()" icon="pi pi-plus"
+                            class="p-button-secondary p-button-outlined mr-2"></button>
+                    </div>
+
+                    <p-tabView [controlClose]="true" (onClose)="removerCliente($event)">
+                        <p-tabPanel *ngFor="let cliente of formulario.dadosClientes; index as index; first as isFirst" [header]="
+                                                                    cliente?.dados?.nome && cliente.clientePrincipal  ? nomeCurto(cliente.dados.nome) + ' (Principal)': 
+                                                                    !cliente?.dados?.nome && cliente.clientePrincipal  ? 'Cliente Principal' : 
+                                                                    cliente?.dados?.nome && !cliente.conjuge ? nomeCurto(cliente.dados.nome) : 
+                                                                    cliente?.dados?.nome && cliente.conjuge ? nomeCurto(cliente.dados.nome) + ' (Cônjuge)' : 
+                                                                    cliente.conjuge ? 'Cônjuge' :  'Cliente ' + (index + 1) "
+                            [selected]="isFirst" [closable]="!cliente.clientePrincipal && !cliente.conjuge">
 
                             <p-accordion>
                                 <p-accordionTab header="Dados" [selected]="true">
-
                                     <div class="p-fluid formgrid grid">
                                         <div class="field col">
                                             <span class="p-float-label">
@@ -225,12 +234,12 @@
                                         </div>
                                     </div>
 
-                                    <div *ngIf="isFirst"
+                                    <div *ngIf="cliente.clientePrincipal || !cliente.conjuge"
                                         class="p-fluid formgrid grid align-items-center vertical-container min-height">
                                         <div class="field col-12 md:col-4 lg:col-4">
                                             <p-selectButton [options]="estadoCivilOpcoes" ngDefaultControl
-                                                name="dados.estadocivil{{index}}" (onChange)="gerarCliente2()"
-                                                [(ngModel)]="cliente.dados.estadocivil" optionLabel="label"
+                                                name="dados.estadocivil{{index}}" (onOptionClick)="gerarConjuge($event, index)"
+                                                [ngModel]="cliente.dados.estadocivil" optionLabel="label"
                                                 optionValue="value"></p-selectButton>
                                         </div>
 
@@ -246,7 +255,7 @@
                                             </span>
                                         </div>
 
-                                        <div *ngIf="isFirst && cliente.dados.estadocivil==='Casado' || cliente.dados.estadocivil==='Outros'"
+                                        <div *ngIf="!cliente.conjuge && cliente.dados.estadocivil==='Casado' || cliente.dados.estadocivil==='Outros'"
                                             class="field col-12 md:col-4 lg:col-4">
                                             <span class="p-float-label">
                                                 <input id="float-input" type="text"
@@ -375,7 +384,7 @@
                                         </div>
                                     </div>
                                 </p-accordionTab>
-                                <p-accordionTab *ngIf="isFirst" header="Referências Pessoais">
+                                <p-accordionTab *ngIf="!cliente.conjuge" header="Referências Pessoais">
                                     <div class="p-fluid formgrid grid">
                                         <div class="field col-12 md:col-7 lg:col-7">
                                             <span class="p-float-label">
@@ -428,13 +437,19 @@
                                         </div>
                                     </div>
                                 </p-accordionTab>
+
+                                <div *ngIf="!isFirst" class="flex flex-row-reverse flex-wrap mt-3">
+                                    <p-inputSwitch [(ngModel)]="cliente.visivel" ngDefaultControl
+                                        name="switchClienteVisivel{{index}}" #switchClienteVisivel="ngModel"></p-inputSwitch>
+                                    <label for="switchClienteVisivel" class="mr-2">Visivel</label>
+                                </div>
                             </p-accordion>
                         </p-tabPanel>
                     </p-tabView>
                 </div>
 
                 <div class="card">
-                    <h5>Especificação da Proposta</h5>
+                    <h5><i class="pi pi-file-edit"></i> Especificação da Proposta</h5>
                     <div class="p-fluid formgrid grid">
                         <div class="field col-12 md:col-3 lg:col-2">
                             <span class="p-float-label">
@@ -460,24 +475,21 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="card">
-                    <h5>Opções</h5>
-                    <div class="col">
-                        <div class="p-field-checkbox">
-                            <p-checkbox label="Cliente 2 / Conjuge" [binary]="true"
-                                [(ngModel)]="formulario.opcoes.clienteConjuge" ngDefaultControl name="clienteConjuge"
-                                #clienteConjuge="ngModel"></p-checkbox>
-                            <p-checkbox label="Corretor" [binary]="true" [(ngModel)]="formulario.opcoes.corretor"
-                                ngDefaultControl name="corretor" #corretor="ngModel"></p-checkbox>
-                            <p-checkbox label="Gerente" [binary]="true" [(ngModel)]="formulario.opcoes.gerente"
-                                ngDefaultControl name="gerente" #gerente="ngModel"></p-checkbox>
-                        </div>
-
-                    </div>
-                </div>
             </form>
         </div>
+        <p-dialog header="Configuração" [modal]="true" [(visible)]="visibleConfigureView" [style]="{ width: '50rem' }" class="dialogConfig">
+            <span class="p-text-secondary block mb-5">Ajuste o formulário conforme suas preferências para exportação</span>
+
+            <h5>Exibir assinaturas <i class="pi pi-info-circle" pTooltip="Opções de exibição ao exportar" tooltipPosition="right" ></i></h5>
+            <div class="p-field-checkbox">
+                <p-checkbox label="Clientes" [binary]="true" [(ngModel)]="formulario.opcoes.exibirAssinaturaCliente" ngDefaultControl
+                name="clientes" #corretor="ngModel"></p-checkbox>
+                <p-checkbox label="Corretor" [binary]="true" [(ngModel)]="formulario.opcoes.exibirAssinaturaCorretor" ngDefaultControl
+                    name="corretor" #corretor="ngModel"></p-checkbox>
+                <p-checkbox label="Gerente" [binary]="true" [(ngModel)]="formulario.opcoes.exibirAssinaturaGerente" ngDefaultControl
+                    name="gerente" #gerente="ngModel"></p-checkbox>
+            </div>
+        </p-dialog>
         <p-toast></p-toast>
         <p-confirmDialog [style]="{'white-space': 'pre-wrap'}" [baseZIndex]="10000"></p-confirmDialog>
         <app-template #pdfTemplate [formulario]="formulario"></app-template>

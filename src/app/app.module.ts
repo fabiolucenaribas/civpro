@@ -22,6 +22,7 @@ import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { AccordionModule } from 'primeng/accordion';
 import { CheckboxModule } from 'primeng/checkbox';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 import { MenubarModule } from 'primeng/menubar';
 import { DialogModule } from 'primeng/dialog';
@@ -78,6 +79,7 @@ registerLocaleData(localePt);
         TabViewModule,
         AccordionModule,
         CheckboxModule,
+        InputSwitchModule,
         MenubarModule,
         DialogModule,
         ConfirmDialogModule,

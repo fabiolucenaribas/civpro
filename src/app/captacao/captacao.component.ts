@@ -68,6 +68,9 @@ export class CaptacaoComponent extends AbstractComponent implements OnInit {
       },
       captacao: {
         visible: false
+      },
+      config: {
+        visible: false
       }
     }
 
