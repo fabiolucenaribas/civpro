@@ -68,7 +68,7 @@
     "@angular/compiler": "^16.2.0",
     "@angular/compiler-cli": "^16.2.0",
     "@angular/language-service": "^16.2.0",
-    "@capacitor/cli": "4.2.0",
+    "@capacitor/cli": "^4.8.2",
     "@ionic/angular-toolkit": "^7.0.0",
     "@playwright/test": "^1.35.1",
     "@types/file-saver": "^2.0.5",
