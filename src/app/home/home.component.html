@@ -32,7 +32,7 @@
                                 <input type="file" id="fileLogo" (change)="uploadLogo($event.target.files)"
                                     accept="image/*" style="display: none;">
                                 <label pButton for="fileLogo" label="Carregar" icon="pi pi-upload"
-                                    class="p-button-success mb-2"></label>
+                                    class="p-button-secondary p-button-outlined mb-2"></label>
                             </div>
 
                             <div class="field">
@@ -68,9 +68,9 @@
 
                 <div class="card ">
                     <div class="flex justify-content-between flex-wrap">
-                        <h5><i class="pi pi-user"></i> Clientes</h5>
+                        <h5 style="color: var(--text-color-secondary);"><i class="pi pi-user"></i> Clientes</h5>
                         <button pButton pRipple label="Adicionar Cliente" (click)="adicionarCliente()" icon="pi pi-plus"
-                            class="p-button-secondary p-button-outlined mr-2"></button>
+                            class="p-button-secondary p-button-outlined mr-2 mb-2"></button>
                     </div>
 
                     <p-tabView [controlClose]="true" (onClose)="removerCliente($event)">
@@ -449,7 +449,7 @@
                 </div>
 
                 <div class="card">
-                    <h5><i class="pi pi-file-edit"></i> Especificação da Proposta</h5>
+                    <h5 style="color: var(--text-color-secondary);"><i class="pi pi-file-edit"></i> Especificação da Proposta</h5>
                     <div class="p-fluid formgrid grid">
                         <div class="field col-12 md:col-3 lg:col-2">
                             <span class="p-float-label">
